@@ -5,13 +5,23 @@ package ihm;
 
 import java.awt.BorderLayout;
 import java.awt.CardLayout;
+import java.awt.FlowLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 
+import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
 import javax.swing.JPanel;
+
+import ihm.secondScreen.back;
+import ihm.secondScreen.exit;
 
 /**
  * @author Antoine
@@ -20,8 +30,6 @@ import javax.swing.JPanel;
 public class rulesScreen extends JFrame implements ItemListener{
 	
 	JPanel cards;
-	protected JLabel a = new JLabel("page 1");
-	protected JLabel b = new JLabel("page 2");
 	
 	public rulesScreen() {
 		
@@ -41,9 +49,11 @@ public class rulesScreen extends JFrame implements ItemListener{
         comboBoxPane.add(cb);
 		
         JPanel card1 = new JPanel();
+        JLabel a = new JLabel("page 1");
         card1.add(a);
         
         JPanel card2 = new JPanel();
+        JLabel b = new JLabel("page 2");
         card2.add(b);
         
         cards = new JPanel(new CardLayout());
@@ -53,8 +63,35 @@ public class rulesScreen extends JFrame implements ItemListener{
         this.add(comboBoxPane, BorderLayout.PAGE_START);
         this.add(cards, BorderLayout.CENTER);
 		
+        //Menu.
+        JMenuBar menuBar = new JMenuBar();
+        JMenu menu = new JMenu("Menu");
+        menuBar.add(menu);
+        JMenuItem exitItem = new JMenuItem("Quit");
+        exitItem.addActionListener(new exit());
+        JMenuItem backItem = new JMenuItem("Back to title screen");
+        backItem.addActionListener(new back());
+        menu.add(backItem);
+        menu.addSeparator();
+        menu.add(exitItem);
+        menuBar.add(menu);
+        this.setJMenuBar(menuBar);
+        
 	}
 
+	class exit implements ActionListener{
+		public void actionPerformed(ActionEvent e) {
+			System.exit(0);
+		}
+	}
+	
+	class back implements ActionListener{
+		public void actionPerformed(ActionEvent e) {
+			new firstScreen();
+			dispose();
+		}
+	}
+	
 	@Override
 	public void itemStateChanged(ItemEvent e) {
 		CardLayout cl = (CardLayout)(cards.getLayout());
