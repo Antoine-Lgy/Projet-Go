@@ -27,13 +27,13 @@ public class Goban {
 	public static void main(String[] args) {
 		String [][] bor= board();
 		
-		playerType.Game.RunGame(2, bor);
+		//playerType.Game.RunGame(2, bor);
 		
-		/*WarriorPiece.Warrior(5,5,"red", bor);
+		WarriorPiece.Warrior(5,5,"red", bor);
 		MagePiece.Mage(6, 6, "black", bor);
 		MonkPiece.Monk(6, 4, "white", bor);
 		ArcherPiece.Archer(5, 7, "ez", bor);
-		NormalPiece.Normal(3, 3, "red", bor);*/
+		NormalPiece.Normal(3, 3, "red", bor);
 		
 		for (int i=0; i<20; i++) {
 			for (int j=0; j<20; j++){

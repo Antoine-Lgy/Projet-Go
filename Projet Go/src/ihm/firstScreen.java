@@ -54,8 +54,8 @@ public class firstScreen extends JFrame{
 		b1.setLayout(new BoxLayout(b1, BoxLayout.PAGE_AXIS));
 		b1.add(nameGame);
 		b1.add(startGame);
-		b1.add(quitGame);
 		b1.add(rules);
+		b1.add(quitGame);
 		startGame.addActionListener(new startButton());
 		quitGame.addActionListener(new quitButton());
 		rules.addActionListener(new rulesButton());
