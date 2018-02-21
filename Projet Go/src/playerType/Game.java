@@ -15,7 +15,7 @@ public class Game {
 	
 	
 	public static void RunGame(/*HashMap<String,Player> comp,*/ int nbPlayers, String[][] board) {
-		while (!moteur.Goban.FullGoban(board) ) {		//Boucle de jeu, passer à ajouter
+		while (!moteur.Goban.FullGoban(board) ) {		//Boucle de jeu, passer ï¿½ ajouter
 			for (int i=0; i<nbPlayers; i++) {
 				Turn(board);
 			}
@@ -45,7 +45,7 @@ public class Game {
 			moteur.NormalPiece.Normal(x, y, Player.getColor(), board);
 		}
 		if (piece == "arc") {
-			moteur.ArcherPiece.Archer(x, y, Player.getColor(), board);
+			moteur.ArcherPiece.Archer(x, y, Player.getColor(), board, "left");
 		}
 		if (piece == "mon") {
 			moteur.MonkPiece.Monk(x, y, Player.getColor(), board);
