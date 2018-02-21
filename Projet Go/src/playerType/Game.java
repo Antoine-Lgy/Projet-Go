@@ -15,7 +15,7 @@ public class Game {
 	
 	
 	public static void RunGame(/*HashMap<String,Player> comp,*/ int nbPlayers, String[][] board) {
-		while (!moteur.Goban.FullGoban(board) ) {		//Boucle de jeu, pass à ajouter
+		while (!moteur.Goban.FullGoban(board) ) {		//Boucle de jeu, passer à ajouter
 			for (int i=0; i<nbPlayers; i++) {
 				Turn(board);
 			}
