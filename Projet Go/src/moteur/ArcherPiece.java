@@ -1,19 +1,23 @@
 package moteur;
 
+import java.util.Scanner;
 
 public class ArcherPiece extends Piece{
 	
 
 	
 	//color = couleur du joueur actuel
-	//direction = right, left, up, down
 	
-	public static void Archer(int x, int y, String colo, String[][] board, String direc) {
+	public static void Archer(int x, int y, String colo, String[][] board /*,String direc*/) {
 		abs = x;
 		ord = y;
 		color = colo;
 		if (board[x][y] == "void") {
 			board[x][y] = color;
+			System.out.println("Chose a direction (right, left, up, down)");
+			Scanner sc = new Scanner(System.in);
+			String direc = sc.nextLine();
+			sc.close();
 			Arrow(x,y, board, direc);
 		}
 	}
