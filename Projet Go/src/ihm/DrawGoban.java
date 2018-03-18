@@ -59,11 +59,9 @@ public class DrawGoban extends JPanel implements ActionListener{
 		black= ImageIO.read(new File("/Users/Antoine/Desktop/projet GO/img GO/blackPiece.png"));//image d'une pierre noir
 		if(tour==true){
 			getGraphics().drawImage(white, x-22, y-22, 40,40, this);
-			getGraphics().drawImage(white, x-22, y-22, 40,40, this);
 			tour=false;
 		}
 		else if (tour==false) {
-			getGraphics().drawImage(black, x-22, y-22, 40,40, this);
 			getGraphics().drawImage(black, x-22, y-22, 40,40, this);
 			tour=true;
 		}
