@@ -74,7 +74,7 @@ public class rulesScreen extends JFrame implements ItemListener{
         textPane.setWrapStyleWord(true);
         textPane.setEditable(false);
         textPane.setRows(20);
-        textPane.setColumns(30);
+        textPane.setColumns(40);
         
         scroll.setWheelScrollingEnabled(true);
         scroll.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
@@ -89,7 +89,7 @@ public class rulesScreen extends JFrame implements ItemListener{
         textPane2.setWrapStyleWord(true);
         textPane2.setEditable(false);
         textPane2.setRows(20);
-        textPane2.setColumns(30);
+        textPane2.setColumns(40);
         scroll2.setWheelScrollingEnabled(true);
         scroll2.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
         

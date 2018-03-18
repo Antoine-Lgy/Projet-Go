@@ -33,7 +33,7 @@ import javax.swing.JTextField;
  */
 public class gameScreen  extends JFrame{
 
-	public gameScreen(){
+	public gameScreen(String nbPlayer){
 		
 		this.setTitle("Goban");
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

@@ -1,6 +1,7 @@
 package ihm;
 
 import java.awt.Graphics;
+import java.awt.GridLayout;
 import java.awt.Image;
 import java.awt.Point;
 import java.awt.event.ActionEvent;
@@ -10,11 +11,13 @@ import java.io.IOException;
 
 import javax.imageio.ImageIO;
 import javax.swing.JButton;
+import javax.swing.JFrame;
 import javax.swing.JPanel;
 
 public class DrawGoban extends JPanel implements ActionListener{
 
 	private boolean tour=false;
+    private JButton[][] tabButton = new JButton[21][21];
 	
 	public void paintComponent(Graphics g){
 		try {
@@ -27,13 +30,12 @@ public class DrawGoban extends JPanel implements ActionListener{
 		//Create a button on each intersection.
 		for(double cpt=0,c=0;cpt<20;cpt++,c=c+28){
 			for(double i=0,l=0;i<20;i++,l=l+28){
-				JButton goLeftCase= new JButton();
-				goLeftCase.setBorderPainted(false); //Button visibility
-				goLeftCase.setBounds((int) l,(int) c,26,26);
+				tabButton[(int) cpt][(int) i] = new JButton();
+				tabButton[(int) cpt][(int) i].setBorderPainted(true); //Button visibility
+				tabButton[(int) cpt][(int) i].setBounds((int) l,(int) c,26,26);
 				//goLeftCase.disable(); //If setBorderPainted is true, buttons are transparent.
-				this.add(goLeftCase);
-				goLeftCase.addActionListener(this);
-				
+				this.add(tabButton[(int) cpt][(int) i]);
+				tabButton[(int) cpt][(int) i].addActionListener(this);
 			}
 		}
 	}
@@ -41,8 +43,7 @@ public class DrawGoban extends JPanel implements ActionListener{
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		// TODO Auto-generated method stub
-		
-		Point point=this.getMousePosition();// on recupere la position du click pour y placer la piere 
+		Point point=this.getMousePosition();// on recupere la position du click pour y placer la pierre 
 		int x =(int)point.getX();
 		int y=(int)point.getY();
 		try {
@@ -58,12 +59,13 @@ public class DrawGoban extends JPanel implements ActionListener{
 		black= ImageIO.read(new File("/Users/Antoine/Desktop/projet GO/img GO/blackPiece.png"));//image d'une pierre noir
 		if(tour==true){
 			getGraphics().drawImage(white, x-22, y-22, 40,40, this);
+			getGraphics().drawImage(white, x-22, y-22, 40,40, this);
 			tour=false;
 		}
 		else if (tour==false) {
 			getGraphics().drawImage(black, x-22, y-22, 40,40, this);
+			getGraphics().drawImage(black, x-22, y-22, 40,40, this);
 			tour=true;
 		}
 	}
-	
 }
