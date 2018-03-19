@@ -130,6 +130,7 @@ public class gameScreen  extends JFrame{
 		
 		JButton cancelButton = new JButton("Cancel");
 		JButton passButton = new JButton("Pass");
+		passButton.addActionListener(new ActionPass());
 		JCheckBox noobMode = new JCheckBox("Beginner mode");
 		JPanel buttonPanel = new JPanel();
 		buttonPanel.setBorder(BorderFactory.createLineBorder(Color.black,1));
@@ -152,6 +153,12 @@ public class gameScreen  extends JFrame{
 		
 		this.add(b2, BorderLayout.LINE_END);
 		
+	}
+	
+	class ActionPass implements ActionListener{
+		public void actionPerformed(ActionEvent e) {
+			
+		}
 	}
 	
 	class exit implements ActionListener{
