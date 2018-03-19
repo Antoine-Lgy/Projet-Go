@@ -33,7 +33,7 @@ import javax.swing.JTextField;
  */
 public class gameScreen  extends JFrame{
 
-	public gameScreen(String nbPlayer){
+	public gameScreen(int nbPlayer){
 		
 		this.setTitle("Goban");
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -59,7 +59,7 @@ public class gameScreen  extends JFrame{
 		this.setJMenuBar(menuBar);
 		
 		//Center.
-		this.add(new DrawGoban(), BorderLayout.CENTER);
+		this.add(new DrawGoban(nbPlayer), BorderLayout.CENTER);
 		
 		///Line_END.
 		//Score.
