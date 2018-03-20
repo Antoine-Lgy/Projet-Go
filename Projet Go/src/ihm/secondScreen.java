@@ -3,6 +3,7 @@
  */
 package ihm;
 
+import ihm.Panel;
 import java.awt.CardLayout;
 import java.awt.Component;
 import java.awt.FlowLayout;
@@ -44,7 +45,7 @@ public class secondScreen extends JFrame{
 		this.setVisible(true);
 		
 		//Screen view.
-		JPanel b1 = new JPanel();
+		Panel b1 = new Panel();
 		b1.setLayout(new FlowLayout());
 		JPanel comboxPanel = new JPanel();
 		comboxPanel.setLayout(new FlowLayout());

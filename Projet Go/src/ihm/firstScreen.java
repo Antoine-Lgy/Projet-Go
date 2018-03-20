@@ -2,7 +2,7 @@
  * 
  */
 package ihm;
-
+import ihm.Panel;
 import java.awt.Component;
 import java.awt.Container;
 import java.awt.FlowLayout;
@@ -16,8 +16,9 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
 
-import javax.swing.BorderFactory;
+//import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -36,9 +37,8 @@ public class firstScreen extends JFrame{
 	
 	public firstScreen() {
 
-		initLayout();
-		
-	}
+			initLayout(); 
+	} 
 	
 	protected void initLayout(){
 		this.setTitle("Goban");
@@ -49,8 +49,9 @@ public class firstScreen extends JFrame{
 		this.setResizable(false);
 		this.setVisible(true);
 		
+		
 		//Screen view.
-		JPanel b1 = new JPanel();
+		Panel b1 = new Panel();
 		b1.setLayout(new BoxLayout(b1, BoxLayout.PAGE_AXIS));
 		b1.add(nameGame);
 		b1.add(startGame);
@@ -66,7 +67,8 @@ public class firstScreen extends JFrame{
 		quitGame.setAlignmentX(Component.CENTER_ALIGNMENT);
 		rules.setAlignmentX(Component.CENTER_ALIGNMENT);
 		this.getContentPane().add(b1);
-		
+		startGame.setOpaque(false);
+		quitGame.setOpaque(false);
 	}
 
 	class quitButton implements ActionListener {

@@ -1,5 +1,6 @@
 package ihm;
 
+import java.awt.Color;
 import java.awt.Component;
 import java.awt.Graphics;
 import java.awt.GridLayout;
@@ -7,6 +8,8 @@ import java.awt.Image;
 import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.io.File;
 import java.io.IOException;
 
@@ -16,17 +19,25 @@ import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
-public class DrawGoban extends JPanel implements ActionListener{
+import boardComponent.Intersection;
+
+public class DrawGoban extends JPanel implements MouseListener{
 
 	//private boolean tour=false;
 	int Player = 0;
-    private JButton[][] tabButton = new JButton[20][20];
-    private static String[][] tabPng = new String[20][20];
+    private Intersection[][] tabInter = new Intersection[20][20];
 	
     public DrawGoban(int nbPlayer){
     	if (nbPlayer == 2){
     		Player = 10;
     	}
+    	//Create a button on each intersection.
+    	for(int lig=0;lig<20;lig++){
+    		for(int col=0;col<20;col++){
+    			tabInter[lig][col] = new Intersection(13+col*28,13+lig*28,null);
+    		}
+    	}
+    	this.addMouseListener(this);
     }
     
 	public void paintComponent(Graphics g){
@@ -36,23 +47,37 @@ public class DrawGoban extends JPanel implements ActionListener{
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		this.setLayout(null);
+		try {
+			this.drawTabPng(g);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		//Image img = ImageIO.read(new File(tabInter[0][0].getPngColor()));
+		//g.drawImage(img, x-8, y-8, 40, 40, this);
+		/*
+		g.fillOval(1, 1, 24, 24);
+		g.setColor(Color.WHITE);
+		g.fillOval(28, 1, 24, 24);
+		*/
+		/*
 		//Create a button on each intersection.
 		for(int lig=0,c=0;lig<20;lig++,c=c+28){
 			for(int col=0,l=0;col<20;col++,l=l+28){
-				tabButton[lig][col] = new JButton();
-				tabButton[lig][col].setBorderPainted(false); //Button visibility
-				tabButton[lig][col].setBounds((int) l,(int) c,26,26);
-				tabButton[lig][col].disable(); //If setBorderPainted is true, buttons are transparent.
-				this.add(tabButton[lig][col]);
-				tabButton[lig][col].addActionListener(this);
-				tabButton[lig][col].setActionCommand(Integer.toString(lig)+","+Integer.toString(col));
+				tabInter[lig][col] = new Intersection(13+lig*28,13+col*28,lig,col,null);
+				//tabInter[lig][col].setBorderPainted(false); //Button visibility
+				//tabInter[lig][col].setBounds((int) l,(int) c,26,26);
+				//tabInter[lig][col].disable(); //If setBorderPainted is true, buttons are transparent.
+				//this.add(tabInter[lig][col]);
+				//tabInter[lig][col].addActionListener(this);
+				//tabInter[lig][col].setActionCommand(Integer.toString(lig)+","+Integer.toString(col));
 			}
 		}
+		this.addMouseListener(this);
+		*/
 	}
 	
-	@Override
-	public void actionPerformed(ActionEvent e) {
+	/*public void actionPerformed(ActionEvent e) {
 		// TODO Auto-generated method stub
 		Point point=this.getLocation(); // on recupere la position du bouton cliquer pour y placer la pierre 
 		int x =(int)point.getX();
@@ -66,53 +91,86 @@ public class DrawGoban extends JPanel implements ActionListener{
 		} catch (IOException e1) {
 			e1.printStackTrace();
 		}
-	}
+	}*/
 	
-	private void drawTabPng(ActionEvent e) throws IOException {
-		Point point=this.getLocation(); // on recupere la position du bouton cliquer pour y placer la pierre 
-		int x =(int)point.getX();
-		int y=(int)point.getY();
+	private void drawTabPng(Graphics g) throws IOException {
 		for (int i=0; i<20; i++) {
 			for (int j=0; j<20; j++){
-				if (getTabPng()[i][j] == null){
+				if (tabInter[i][j].getColor() == null){
 					
 				}
 				else {
-					Image img = ImageIO.read(new File(getTabPng()[i][j]));
-					getGraphics().drawImage(img, x-8+j*28, y-8+i*28, 40, 40, this);
+					int x = tabInter[i][j].getAbscisse();
+					int y = tabInter[i][j].getOrdonnee();
+					g.setColor(tabInter[i][j].getColor());
+					g.fillOval(x-12, y-12, 24, 24);
 				}
 			}
 		}
 	}
 	
 	private void addPngInTab(int x, int y) throws IOException {
-		String white,black,red ;
-		white= "/Users/Antoine/Desktop/projet GO/img GO/whitePiece.png";//image d'une pierre blanche
-		black= "/Users/Antoine/Desktop/projet GO/img GO/blackPiece.png";//image d'une pierre noir
-		red= "/Users/Antoine/Desktop/projet GO/img GO/redPiece.png";//image d'une pierre rouge
+		Color white,black,red ;
+		white= Color.WHITE;//image d'une pierre blanche
+		black= Color.BLACK;//image d'une pierre noir
+		red= Color.RED;//image d'une pierre rouge
 		if(Player==0){
-			getTabPng()[y][x] = black;
+			tabInter[y][x].setColor(black);
 			Player=1;
 		}
 		else if (Player==1) {
-			getTabPng()[y][x] = white;
+			tabInter[y][x].setColor(white);
 			Player=2;
 		}
 		else if (Player==2) {
-			getTabPng()[y][x] = red;
+			tabInter[y][x].setColor(red);
 			Player=0;
 		}
 		else if(Player==10){
-			getTabPng()[y][x] = black;
+			tabInter[y][x].setColor(black);
 			Player=11;
 		}
 		else if(Player==11){
-			getTabPng()[y][x] = white;
+			tabInter[y][x].setColor(white);
 			Player=10;
 		}
 	}
 
-	public static String[][] getTabPng() {
-		return tabPng;
+	@Override
+	public void mouseClicked(MouseEvent e) {
+		// TODO Auto-generated method stub
+		int xclic = e.getX()/28;
+		int yclic = e.getY()/28;
+		try {
+			this.addPngInTab(xclic,yclic);
+			this.repaint();
+		} catch (IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+	}
+
+	@Override
+	public void mousePressed(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void mouseReleased(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void mouseEntered(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void mouseExited(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
 	}
 }
