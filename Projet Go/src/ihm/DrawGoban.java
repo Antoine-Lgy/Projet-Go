@@ -23,7 +23,6 @@ import boardComponent.Intersection;
 
 public class DrawGoban extends JPanel implements MouseListener{
 
-	//private boolean tour=false;
 	int Player = 0;
     private Intersection[][] tabInter = new Intersection[20][20];
 	
@@ -53,45 +52,8 @@ public class DrawGoban extends JPanel implements MouseListener{
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		//Image img = ImageIO.read(new File(tabInter[0][0].getPngColor()));
-		//g.drawImage(img, x-8, y-8, 40, 40, this);
-		/*
-		g.fillOval(1, 1, 24, 24);
-		g.setColor(Color.WHITE);
-		g.fillOval(28, 1, 24, 24);
-		*/
-		/*
-		//Create a button on each intersection.
-		for(int lig=0,c=0;lig<20;lig++,c=c+28){
-			for(int col=0,l=0;col<20;col++,l=l+28){
-				tabInter[lig][col] = new Intersection(13+lig*28,13+col*28,lig,col,null);
-				//tabInter[lig][col].setBorderPainted(false); //Button visibility
-				//tabInter[lig][col].setBounds((int) l,(int) c,26,26);
-				//tabInter[lig][col].disable(); //If setBorderPainted is true, buttons are transparent.
-				//this.add(tabInter[lig][col]);
-				//tabInter[lig][col].addActionListener(this);
-				//tabInter[lig][col].setActionCommand(Integer.toString(lig)+","+Integer.toString(col));
-			}
-		}
-		this.addMouseListener(this);
-		*/
+		
 	}
-	
-	/*public void actionPerformed(ActionEvent e) {
-		// TODO Auto-generated method stub
-		Point point=this.getLocation(); // on recupere la position du bouton cliquer pour y placer la pierre 
-		int x =(int)point.getX();
-		int y=(int)point.getY();
-		String values[]  = e.getActionCommand().split(",");
-		int valLIG = Integer.parseInt(values[0]);
-		int valCOL = Integer.parseInt(values[1]);
-		try {
-			this.addPngInTab(valCOL,valLIG);  //Ajoute une Image dans un tableau.
-			this.drawTabPng(e);  //Dessine tout le tableau tabPng.
-		} catch (IOException e1) {
-			e1.printStackTrace();
-		}
-	}*/
 	
 	private void drawTabPng(Graphics g) throws IOException {
 		for (int i=0; i<20; i++) {
