@@ -25,6 +25,7 @@ public class DrawGoban extends JPanel implements MouseListener{
 
 	int Player = 0;
     private Intersection[][] tabInter = new Intersection[20][20];
+    private Intersection lastIntersection = null;
 	
     public DrawGoban(int nbPlayer){
     	if (nbPlayer == 2){
@@ -46,16 +47,10 @@ public class DrawGoban extends JPanel implements MouseListener{
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		try {
-			this.drawTabPng(g);
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
+		this.drawTabPng(g);
 	}
 	
-	private void drawTabPng(Graphics g) throws IOException {
+	private void drawTabPng(Graphics g) {
 		for (int i=0; i<20; i++) {
 			for (int j=0; j<20; j++){
 				if (tabInter[i][j].getColor() == null){
@@ -71,7 +66,7 @@ public class DrawGoban extends JPanel implements MouseListener{
 		}
 	}
 	
-	private void addPngInTab(int x, int y) throws IOException {
+	private void addPngInTab(int x, int y) {
 		Color white,black,red ;
 		white= Color.WHITE;//image d'une pierre blanche
 		black= Color.BLACK;//image d'une pierre noir
@@ -96,6 +91,31 @@ public class DrawGoban extends JPanel implements MouseListener{
 			tabInter[y][x].setColor(white);
 			Player=10;
 		}
+		tabInter[y][x].setPrevIntersection(lastIntersection);
+		lastIntersection = tabInter[y][x];
+	}
+	
+	public void Undo() {
+		if (lastIntersection != null) {
+			lastIntersection.setColor(null);
+			lastIntersection = lastIntersection.getPrevIntersection();
+			repaint();
+			if(Player==0){
+				Player=2;
+			}
+			else if (Player==1) {
+				Player=0;
+			}
+			else if (Player==2) {
+				Player=1;
+			}
+			else if(Player==10){
+				Player=11;
+			}
+			else if(Player==11){
+				Player=10;
+			}
+		}
 	}
 
 	@Override
@@ -103,13 +123,8 @@ public class DrawGoban extends JPanel implements MouseListener{
 		// TODO Auto-generated method stub
 		int xclic = e.getX()/28;
 		int yclic = e.getY()/28;
-		try {
-			this.addPngInTab(xclic,yclic);
-			this.repaint();
-		} catch (IOException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
+		this.addPngInTab(xclic, yclic);
+		this.repaint();
 	}
 
 	@Override

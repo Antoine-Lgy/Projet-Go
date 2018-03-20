@@ -33,6 +33,8 @@ import javax.swing.JTextField;
  */
 public class gameScreen  extends JFrame{
 
+	DrawGoban myGoban = null;
+	
 	public gameScreen(int nbPlayer){
 		
 		this.setTitle("Goban");
@@ -59,7 +61,8 @@ public class gameScreen  extends JFrame{
 		this.setJMenuBar(menuBar);
 		
 		//Center.
-		this.add(new DrawGoban(nbPlayer), BorderLayout.CENTER);
+		myGoban = new DrawGoban(nbPlayer);
+		this.add(myGoban, BorderLayout.CENTER);
 		
 		///Line_END.
 		//Score.
@@ -129,6 +132,7 @@ public class gameScreen  extends JFrame{
 		spe4Panel.add(spe4red);
 		
 		JButton cancelButton = new JButton("Cancel");
+		cancelButton.addActionListener(new ActionCancel());
 		JButton passButton = new JButton("Pass");
 		passButton.addActionListener(new ActionPass());
 		JCheckBox noobMode = new JCheckBox("Beginner mode");
@@ -138,7 +142,6 @@ public class gameScreen  extends JFrame{
 		buttonPanel.add(cancelButton);
 		buttonPanel.add(passButton);
 		buttonPanel.add(noobMode);
-		
 		
 		JPanel b2 = new JPanel();
 		b2.setLayout(new BoxLayout(b2, BoxLayout.PAGE_AXIS));
@@ -150,9 +153,14 @@ public class gameScreen  extends JFrame{
 		b2.add(spe4Panel);
 		b2.add(buttonPanel);
 		
-		
 		this.add(b2, BorderLayout.LINE_END);
 		
+	}
+	
+	class ActionCancel implements ActionListener{
+		public void actionPerformed(ActionEvent e) {
+			myGoban.Undo();
+		}
 	}
 	
 	class ActionPass implements ActionListener{

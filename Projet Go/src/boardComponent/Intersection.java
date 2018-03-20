@@ -17,6 +17,7 @@ public class Intersection {
 	protected int abscisse;
 	protected int ordonnee;
 	protected Color bgColor;
+	protected Intersection prevIntersection = null;
 
 	public Intersection(int abs, int ord, Color _C) {
 		this.abscisse = abs;
@@ -41,5 +42,11 @@ public class Intersection {
 	}
 	public void setColor(Color _C) {
 		this.bgColor = _C;
+	}
+	public void setPrevIntersection(Intersection intersection) {
+		this.prevIntersection = intersection;
+	}
+	public Intersection getPrevIntersection() {
+		return prevIntersection;
 	}
 }
