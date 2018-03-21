@@ -165,6 +165,7 @@ public class gameScreen  extends JFrame{
 	
 	class ActionPass implements ActionListener{
 		public void actionPerformed(ActionEvent e) {
+			myGoban.Pass();
 			
 		}
 	}

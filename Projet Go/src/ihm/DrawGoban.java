@@ -117,6 +117,24 @@ public class DrawGoban extends JPanel implements MouseListener{
 			}
 		}
 	}
+	
+	public void Pass() {
+		if(Player==0){
+			Player=1;
+		}
+		else if (Player==1) {
+			Player=2;
+		}
+		else if (Player==2) {
+			Player=0;
+		}
+		else if(Player==10){
+			Player=11;
+		}
+		else if(Player==11){
+			Player=10;
+		}
+	}
 
 	@Override
 	public void mouseClicked(MouseEvent e) {
