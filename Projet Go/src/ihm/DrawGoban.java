@@ -71,28 +71,30 @@ public class DrawGoban extends JPanel implements MouseListener{
 		white= Color.WHITE;//image d'une pierre blanche
 		black= Color.BLACK;//image d'une pierre noir
 		red= Color.RED;//image d'une pierre rouge
-		if(Player==0){
-			tabInter[y][x].setColor(black);
-			Player=1;
+		if(tabInter[y][x].getColor()==null) {
+			if(Player==0){
+				tabInter[y][x].setColor(black);
+				Player=1;
+			}
+			else if (Player==1) {
+				tabInter[y][x].setColor(white);
+				Player=2;
+			}
+			else if (Player==2) {
+				tabInter[y][x].setColor(red);
+				Player=0;
+			}
+			else if(Player==10){
+				tabInter[y][x].setColor(black);
+				Player=11;
+			}
+			else if(Player==11){
+				tabInter[y][x].setColor(white);
+				Player=10;
+			}
+			tabInter[y][x].setPrevIntersection(lastIntersection);
+			lastIntersection = tabInter[y][x];
 		}
-		else if (Player==1) {
-			tabInter[y][x].setColor(white);
-			Player=2;
-		}
-		else if (Player==2) {
-			tabInter[y][x].setColor(red);
-			Player=0;
-		}
-		else if(Player==10){
-			tabInter[y][x].setColor(black);
-			Player=11;
-		}
-		else if(Player==11){
-			tabInter[y][x].setColor(white);
-			Player=10;
-		}
-		tabInter[y][x].setPrevIntersection(lastIntersection);
-		lastIntersection = tabInter[y][x];
 	}
 	
 	public void Undo() {
