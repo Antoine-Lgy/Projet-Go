@@ -1,41 +1,33 @@
 package moteur;
 
+import java.awt.Color;
+
+import boardComponent.Intersection;
+
 public class MagePiece extends Piece{
 	
-	//color = couleur du joueur actuel
-	
-	public static void Mage(int x, int y, String colo, String[][] board) {
-		abs = x;
-		ord = y;
-		color = colo;
-		if (board[x][y] == "void") {
-			board[x][y] = color;
-			Blast(x,y, board);
-		}
-	}
-	
-	
-	public static void Blast(int x, int y, String[][] board) {
+	public static void Blast(Intersection[][] board, Color couleur, int x, int y) {
 		if (x<19 && y<19){
-			if (board[x+1][y+1] != "void") {
-				board[x+1][y+1] = "void";	
+			if (board[x+1][y+1].getColor() != null) {
+				board[x+1][y+1].setColor(null);
 			}
 		}
 		if (x>0 && y<19){
-			if (board[x-1][y+1] != "void") {
-				board[x-1][y+1] = "void";
+			if (board[x-1][y+1].getColor() != null) {
+				board[x-1][y+1].setColor(null);
 			}
 		}
 		if (y>0 && x>0){
-			if (board[x-1][y-1] != "void") {
-				board[x-1][y-1] = "void";	
+			if (board[x-1][y-1].getColor() != null) {
+				board[x-1][y-1].setColor(null);
 			}	
 		}
 		if (y>0 && x<19){
-			if (board[x+1][y-1] != "void") {
-				board[x+1][y-1] = "void";
+			if (board[x+1][y-1].getColor() != null) {
+				board[x+1][y-1].setColor(null);
 			}	
 		}
+		board[x][y].setColor(couleur);
 	}
 }
 

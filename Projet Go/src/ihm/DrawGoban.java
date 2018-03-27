@@ -12,20 +12,29 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.io.File;
 import java.io.IOException;
+import java.util.Scanner;
 
 import javax.imageio.ImageIO;
 import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 import boardComponent.Intersection;
+import boardComponent.Territory;
+import moteur.ArcherPiece;
+import moteur.MagePiece;
+import moteur.MonkPiece;
+import moteur.NormalPiece;
+import moteur.WarriorPiece;
 
 public class DrawGoban extends JPanel implements MouseListener{
 
 	int Player = 0;
     private Intersection[][] tabInter = new Intersection[20][20];
     private Intersection lastIntersection = null;
+	private String type = "normal";
 	
     public DrawGoban(int nbPlayer){
     	if (nbPlayer == 2){
@@ -59,6 +68,9 @@ public class DrawGoban extends JPanel implements MouseListener{
 				else {
 					int x = tabInter[i][j].getAbscisse();
 					int y = tabInter[i][j].getOrdonnee();
+					if (Territory.eye(tabInter, i, j) == true){
+						tabInter[i][j].setColor(null);
+					}
 					g.setColor(tabInter[i][j].getColor());
 					g.fillOval(x-12, y-12, 24, 24);
 				}
@@ -72,28 +84,126 @@ public class DrawGoban extends JPanel implements MouseListener{
 		black= Color.BLACK;//image d'une pierre noir
 		red= Color.RED;//image d'une pierre rouge
 		if(tabInter[y][x].getColor()==null) {
-			if(Player==0){
-				tabInter[y][x].setColor(black);
-				Player=1;
+			if (Territory.eye(tabInter, y, x) == false){
+			if (type=="normal") {
+				if(Player==0){
+					NormalPiece.Normal(tabInter,black,y,x);
+					Player=1;
+				}
+				else if (Player==1) {
+					NormalPiece.Normal(tabInter,white,y,x);
+					Player=2;
+				}
+				else if (Player==2) {
+					NormalPiece.Normal(tabInter,red,y,x);
+					Player=0;
+				}
+				else if(Player==10){
+					NormalPiece.Normal(tabInter,black,y,x);
+					Player=11;
+				}
+				else if(Player==11){
+					NormalPiece.Normal(tabInter,white,y,x);
+					Player=10;
+				}
 			}
-			else if (Player==1) {
-				tabInter[y][x].setColor(white);
-				Player=2;
+			if (type=="warrior") {
+				if(Player==0){
+					WarriorPiece.CallToArms(tabInter,black,y,x);
+					Player=1;
+				}
+				else if (Player==1) {
+					WarriorPiece.CallToArms(tabInter,white,y,x);
+					Player=2;
+				}
+				else if (Player==2) {
+					WarriorPiece.CallToArms(tabInter,red,y,x);
+					Player=0;
+				}
+				else if(Player==10){
+					WarriorPiece.CallToArms(tabInter,black,y,x);
+					Player=11;
+				}
+				else if(Player==11){
+					WarriorPiece.CallToArms(tabInter,white,y,x);
+					Player=10;
+				}
+				type = "normal";
 			}
-			else if (Player==2) {
-				tabInter[y][x].setColor(red);
-				Player=0;
+			if (type=="monk") {
+				if(Player==0){
+					MonkPiece.Convert(tabInter,black,y,x);
+					Player=1;
+				}
+				else if (Player==1) {
+					MonkPiece.Convert(tabInter,white,y,x);
+					Player=2;
+				}
+				else if (Player==2) {
+					MonkPiece.Convert(tabInter,red,y,x);
+					Player=0;
+				}
+				else if(Player==10){
+					MonkPiece.Convert(tabInter,black,y,x);
+					Player=11;
+				}
+				else if(Player==11){
+					MonkPiece.Convert(tabInter,white,y,x);
+					Player=10;
+				}
+				type = "normal";
 			}
-			else if(Player==10){
-				tabInter[y][x].setColor(black);
-				Player=11;
+			if (type=="mage") {
+				if(Player==0){
+					MagePiece.Blast(tabInter,black,y,x);
+					Player=1;
+				}
+				else if (Player==1) {
+					MagePiece.Blast(tabInter,white,y,x);
+					Player=2;
+				}
+				else if (Player==2) {
+					MagePiece.Blast(tabInter,red,y,x);
+					Player=0;
+				}
+				else if(Player==10){
+					MagePiece.Blast(tabInter,black,y,x);
+					Player=11;
+				}
+				else if(Player==11){
+					MagePiece.Blast(tabInter,white,y,x);
+					Player=10;
+				}
+				type = "normal";
 			}
-			else if(Player==11){
-				tabInter[y][x].setColor(white);
-				Player=10;
+			if (type=="archer") {
+				JOptionPane jop = new JOptionPane();
+			    String direc = jop.showInputDialog(null, "Chose a direction (right, left, up, down):", "Arrow", JOptionPane.QUESTION_MESSAGE);
+				if(Player==0){
+					ArcherPiece.Arrow(tabInter,black,y,x,direc);
+					Player=1;
+				}
+				else if (Player==1) {
+					ArcherPiece.Arrow(tabInter,white,y,x,direc);
+					Player=2;
+				}
+				else if (Player==2) {
+					ArcherPiece.Arrow(tabInter,red,y,x,direc);
+					Player=0;
+				}
+				else if(Player==10){
+					ArcherPiece.Arrow(tabInter,black,y,x,direc);
+					Player=11;
+				}
+				else if(Player==11){
+					ArcherPiece.Arrow(tabInter,white,y,x,direc);
+					Player=10;
+				}
+				type = "normal";
 			}
 			tabInter[y][x].setPrevIntersection(lastIntersection);
 			lastIntersection = tabInter[y][x];
+		}
 		}
 	}
 	
@@ -169,5 +279,9 @@ public class DrawGoban extends JPanel implements MouseListener{
 	public void mouseExited(MouseEvent e) {
 		// TODO Auto-generated method stub
 		
+	}
+	
+	public void setType(String type){
+		this.type = type;
 	}
 }

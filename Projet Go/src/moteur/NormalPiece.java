@@ -1,14 +1,13 @@
 package moteur;
 
+import java.awt.Color;
+
+import boardComponent.Intersection;
+
 public class NormalPiece extends Piece{
 	
-	public static void Normal(int x, int y, String colo, String[][] board) {
-		abs = x;
-		ord = y;
-		color = colo;
-		if (board[x][y] == "void") {
-			board[x][y] = color;
-		}
+	public static void Normal(Intersection[][] board, Color couleur, int ord, int abs) {
+		board[ord][abs].setColor(couleur);
 	}
 
 }

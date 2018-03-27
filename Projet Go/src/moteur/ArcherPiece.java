@@ -1,58 +1,43 @@
 package moteur;
 
+import java.awt.Color;
 import java.util.Scanner;
+
+import boardComponent.Intersection;
 
 public class ArcherPiece extends Piece{
 	
-
-	
-	//color = couleur du joueur actuel
-	
-	public static void Archer(int x, int y, String colo, String[][] board ,String direc) {
-		abs = x;
-		ord = y;
-		color = colo;
-		if (board[x][y] == "void") {
-			board[x][y] = color;
-			/*System.out.println("Chose a direction (right, left, up, down)");
-			Scanner sc = new Scanner(System.in);
-			String direc = sc.nextLine();
-			sc.close();*/
-			Arrow(x,y, board, direc);
-		}
-	}
-	
-	
-	public static void Arrow(int x, int y, String[][] board, String direction) {
-		int i=0;
-		if (direction == "left"){
-			while (x>=0 && i<4) {
-				board[x][y-1] = "void";
-				i++;
-				y--;
+	public static void Arrow(Intersection[][] board, Color couleur, int x, int y, String direction) {
+		int i;
+		if (direction.equals("left")){
+			for (i=0;i<=4;i++){
+				if (y-1-i >= 0){
+					board[x][y-1-i].setColor(null);
+				}
 			}
 		}
-		else if (direction == "right"){
-			while (x<=20 && i<4) {
-				board[x][y+1] = "void";
-				i++;
-				y++;
+		else if (direction.equals("right")){
+			for (i=0;i<=4;i++){
+				if (y+1+i <= 19){
+					board[x][y+1+i].setColor(null);
+				}
 			}
 		}
-		else if (direction == "up"){
-			while (y>=0 && i<4) {
-				board[x-1][y] = "void";
-				i++;
-				x--;
+		else if (direction.equals("up")){
+			for (i=0;i<=4;i++){
+				if (x-1-i >= 0){
+					board[x-1-i][y].setColor(null);
+				}
 			}
 		}
-		else if (direction == "down"){
-			while (y<=20 && i<4) {
-				board[x-1][y] = "void";
-				i++;
-				x++;
+		else if (direction.equals("down")){
+			for (i=1;i<=4;i++){
+				if (x+1+i <= 19){
+					board[x+1+i][y].setColor(null);
+				}
 			}	
 		}
+		board[x][y].setColor(couleur);
 	}
 
 }

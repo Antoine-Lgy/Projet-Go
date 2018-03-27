@@ -24,6 +24,7 @@ import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
@@ -96,8 +97,11 @@ public class gameScreen  extends JFrame{
 		
 		//Special piece button.
 		JButton spe1black = new JButton("Black archer");
+		spe1black.addActionListener(new bArcher());
 		JButton spe1white = new JButton("White archer");
+		spe1white.addActionListener(new wArcher());
 		JButton spe1red = new JButton("Red archer");
+		spe1red.addActionListener(new rArcher());
 		JPanel spe1Panel = new JPanel();
 		spe1Panel.setLayout(new FlowLayout());
 		spe1Panel.add(spe1black);
@@ -105,8 +109,11 @@ public class gameScreen  extends JFrame{
 		spe1Panel.add(spe1red);
 		
 		JButton spe2black = new JButton("Black mage");
+		spe2black.addActionListener(new bMage());
 		JButton spe2white = new JButton("White mage");
+		spe2white.addActionListener(new wMage());
 		JButton spe2red = new JButton("Red mage");
+		spe2red.addActionListener(new rMage());
 		JPanel spe2Panel = new JPanel();
 		spe2Panel.setLayout(new FlowLayout());
 		spe2Panel.add(spe2black);
@@ -114,8 +121,11 @@ public class gameScreen  extends JFrame{
 		spe2Panel.add(spe2red);
 		
 		JButton spe3black = new JButton("Black monk");
+		spe3black.addActionListener(new bMonk());
 		JButton spe3white = new JButton("White monk");
+		spe3white.addActionListener(new wMonk());
 		JButton spe3red = new JButton("Red monk");
+		spe3red.addActionListener(new rMonk());
 		JPanel spe3Panel = new JPanel();
 		spe3Panel.setLayout(new FlowLayout());
 		spe3Panel.add(spe3black);
@@ -123,8 +133,11 @@ public class gameScreen  extends JFrame{
 		spe3Panel.add(spe3red);
 		
 		JButton spe4black = new JButton("Black warrior");
+		spe4black.addActionListener(new bWarrior());
 		JButton spe4white = new JButton("White warrior");
+		spe4white.addActionListener(new wWarrior());
 		JButton spe4red = new JButton("Red warrior");
+		spe4red.addActionListener(new rWarrior());
 		JPanel spe4Panel = new JPanel();
 		spe4Panel.setLayout(new FlowLayout());
 		spe4Panel.add(spe4black);
@@ -183,4 +196,75 @@ public class gameScreen  extends JFrame{
 		}
 	}
 	
+	class bArcher implements ActionListener{
+		public void actionPerformed(ActionEvent e) {
+			myGoban.setType("archer");
+		}
+	}
+	
+	class wArcher implements ActionListener{
+		public void actionPerformed(ActionEvent e) {
+			myGoban.setType("archer");
+		}
+	}
+	
+	class rArcher implements ActionListener{
+		public void actionPerformed(ActionEvent e) {
+			myGoban.setType("archer");
+		}
+	}
+	
+	class bMage implements ActionListener{
+		public void actionPerformed(ActionEvent e) {
+			myGoban.setType("mage");
+		}
+	}
+	
+	class wMage implements ActionListener{
+		public void actionPerformed(ActionEvent e) {
+			myGoban.setType("mage");
+		}
+	}
+	
+	class rMage implements ActionListener{
+		public void actionPerformed(ActionEvent e) {
+			myGoban.setType("mage");
+		}
+	}
+	
+	class bMonk implements ActionListener{
+		public void actionPerformed(ActionEvent e) {
+			myGoban.setType("monk");
+		}
+	}
+	
+	class wMonk implements ActionListener{
+		public void actionPerformed(ActionEvent e) {
+			myGoban.setType("monk");
+		}
+	}
+	
+	class rMonk implements ActionListener{
+		public void actionPerformed(ActionEvent e) {
+			myGoban.setType("monk");
+		}
+	}
+	
+	class bWarrior implements ActionListener{
+		public void actionPerformed(ActionEvent e) {
+			myGoban.setType("warrior");
+		}
+	}
+	
+	class wWarrior implements ActionListener{
+		public void actionPerformed(ActionEvent e) {
+			myGoban.setType("warrior");
+		}
+	}
+	
+	class rWarrior implements ActionListener{
+		public void actionPerformed(ActionEvent e) {
+			myGoban.setType("warrior");
+		}
+	}
 }
