@@ -27,20 +27,25 @@ import moteur.ArcherPiece;
 import moteur.MagePiece;
 import moteur.MonkPiece;
 import moteur.NormalPiece;
+import moteur.Score;
 import moteur.WarriorPiece;
 
 public class DrawGoban extends JPanel implements MouseListener{
 
 	int Player = 0;
-    private Intersection[][] tabInter = new Intersection[20][20];
+	int PassNumLim = 3;
+	int ActualPassNum = 3;
+    Intersection[][] tabInter = new Intersection[20][20];
     private Intersection lastIntersection = null;
 	private String type = "normal";
 	
     public DrawGoban(int nbPlayer){
     	if (nbPlayer == 2){
     		Player = 10;
+    		PassNumLim = 2;
+    		ActualPassNum = 2;
     	}
-    	//Create a button on each intersection.
+    	//Create a "button" on each intersection.
     	for(int lig=0;lig<20;lig++){
     		for(int col=0;col<20;col++){
     			tabInter[lig][col] = new Intersection(13+col*28,13+lig*28,null);
@@ -246,6 +251,37 @@ public class DrawGoban extends JPanel implements MouseListener{
 		else if(Player==11){
 			Player=10;
 		}
+		ActualPassNum--;
+		if (ActualPassNum == 1){
+			JOptionPane jop = new JOptionPane();
+			jop.showMessageDialog(null, "Si le prochain joueur passe son tour, la partie sera finie.", null, JOptionPane.INFORMATION_MESSAGE);
+		}
+		if (ActualPassNum == 0){
+			Player = 5;
+			JOptionPane jop = new JOptionPane();
+			int Bs = Score.BScoreCount(tabInter);
+			int Ws = Score.WScoreCount(tabInter);
+			int Rs = Score.RScoreCount(tabInter);
+			if (PassNumLim == 3){
+				if (Bs > Ws && Bs > Rs) {
+					jop.showMessageDialog(null, "Fin de la partie, Le jouer Noir à gagné !" + " Noir : "+ Bs + "  Blanc : "+ Ws + "  Rouge : "+ Rs, null, JOptionPane.INFORMATION_MESSAGE);
+				}
+				if (Ws > Bs && Ws > Rs) {
+					jop.showMessageDialog(null, "Fin de la partie, Le jouer Blanc à gagné !" + " Noir : "+ Bs + "  Blanc : "+ Ws + "  Rouge : "+ Rs, null, JOptionPane.INFORMATION_MESSAGE);
+				}
+				if (Rs > Ws && Rs > Bs) {
+					jop.showMessageDialog(null, "Fin de la partie, Le jouer Rouge à gagné !" + " Noir : "+ Bs + "  Blanc : "+ Ws + "  Rouge : "+ Rs, null, JOptionPane.INFORMATION_MESSAGE);
+				}
+			}
+			else {
+				if (Bs > Ws && Bs > Rs) {
+					jop.showMessageDialog(null, "Fin de la partie, Le jouer Noir à gagné !" + " Noir : "+ Bs + "  Blanc : "+ Ws, null, JOptionPane.INFORMATION_MESSAGE);
+				}
+				if (Ws > Bs && Ws > Rs) {
+					jop.showMessageDialog(null, "Fin de la partie, Le jouer Blanc à gagné !" + " Noir : "+ Bs + "  Blanc : "+ Ws, null, JOptionPane.INFORMATION_MESSAGE);
+				}
+			}
+		}
 	}
 
 	@Override
@@ -255,6 +291,7 @@ public class DrawGoban extends JPanel implements MouseListener{
 		int yclic = e.getY()/28;
 		this.addPngInTab(xclic, yclic);
 		this.repaint();
+		ActualPassNum = PassNumLim;
 	}
 
 	@Override
@@ -283,5 +320,9 @@ public class DrawGoban extends JPanel implements MouseListener{
 	
 	public void setType(String type){
 		this.type = type;
+	}
+	
+	public Intersection[][] getTab(){
+		return tabInter;
 	}
 }

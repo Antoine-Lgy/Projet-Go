@@ -53,7 +53,8 @@ public class Territory {
 				}
 			}
 		}
-		if (x==0){
+		//Ligne du Haut.
+		if (x==0 && y!=0 && y!=19){
 			if (board[x+1][y].getColor() != null && board[x][y+1].getColor() != null && board[x][y-1].getColor() != null){
 				Color couleurTest = board[x+1][y].getColor();
 				if (board[x][y+1].getColor().equals(couleurTest) && board[x][y-1].getColor().equals(couleurTest) && board[x][y].getColor() != couleurTest){
@@ -61,7 +62,8 @@ public class Territory {
 				}
 			}
 		}
-		if (y==0 && x!=19){
+		//Ligne de Gauche.
+		if (y==0 && x!=0 && x!=19){
 			if (board[x+1][y].getColor() != null && board[x][y+1].getColor() != null && board[x-1][y].getColor() != null){
 				Color couleurTest = board[x+1][y].getColor();
 				if (board[x][y+1].getColor().equals(couleurTest) && board[x-1][y].getColor().equals(couleurTest) && board[x][y].getColor() != couleurTest){
@@ -69,7 +71,8 @@ public class Territory {
 				}
 			}
 		}
-		if (x==19){
+		//Ligne du Bas.
+		if (x==19 && y!=19 && y!=0){
 			if (board[x-1][y].getColor() != null && board[x][y+1].getColor() != null && board[x][y-1].getColor() != null){
 				Color couleurTest = board[x-1][y].getColor();
 				if (board[x][y+1].getColor().equals(couleurTest) && board[x][y-1].getColor().equals(couleurTest) && board[x][y].getColor() != couleurTest){
@@ -77,7 +80,8 @@ public class Territory {
 				}
 			}
 		}
-		if (y==19 && x!= 19){
+		//Ligne de Droite.
+		if (y==19 && x!= 19 && x!=0){
 			if (board[x+1][y].getColor() != null && board[x][y-1].getColor() != null && board[x-1][y].getColor() != null){
 				Color couleurTest = board[x+1][y].getColor();
 				if (board[x][y-1].getColor().equals(couleurTest) && board[x-1][y].getColor().equals(couleurTest) && board[x][y].getColor() != couleurTest){

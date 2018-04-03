@@ -13,6 +13,7 @@ import java.awt.GridLayout;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
 
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
@@ -28,6 +29,9 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
+import boardComponent.Intersection;
+import moteur.Score;
+
 /**
  * @author Antoine
  *
@@ -35,13 +39,28 @@ import javax.swing.JTextField;
 public class gameScreen  extends JFrame{
 
 	DrawGoban myGoban = null;
+	JTextField blackScore;
+	JTextField whiteScore;
+	JTextField redScore;
+	JButton spe1black;
+	JButton spe1white;
+	JButton spe1red;
+	JButton spe2black;
+	JButton spe2white;
+	JButton spe2red;
+	JButton spe3black;
+	JButton spe3white;
+	JButton spe3red;
+	JButton spe4black;
+	JButton spe4white;
+	JButton spe4red;
 	
 	public gameScreen(int nbPlayer){
 		
 		this.setTitle("Goban");
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.pack();
-		this.setSize(950, 600);
+		this.setSize(980, 600);
 		this.setLocationRelativeTo(null);
 		this.setResizable(false);
 		this.setVisible(true);
@@ -67,9 +86,9 @@ public class gameScreen  extends JFrame{
 		
 		///Line_END.
 		//Score.
-		JTextField blackScore = new JTextField("Black score");
-		JTextField whiteScore = new JTextField("White score");
-		JTextField redScore = new JTextField("Red score");
+		blackScore = new JTextField("Black score");
+		whiteScore = new JTextField("White score");
+		redScore = new JTextField("Red score");
 		blackScore.setEditable(false);
 		blackScore.setPreferredSize(new Dimension(120,80));
 		blackScore.setHorizontalAlignment(JTextField.CENTER);
@@ -96,11 +115,11 @@ public class gameScreen  extends JFrame{
 		playerPanel.add(re);
 		
 		//Special piece button.
-		JButton spe1black = new JButton("Black archer");
+		spe1black = new JButton("Black archer");
 		spe1black.addActionListener(new bArcher());
-		JButton spe1white = new JButton("White archer");
+		spe1white = new JButton("White archer");
 		spe1white.addActionListener(new wArcher());
-		JButton spe1red = new JButton("Red archer");
+		spe1red = new JButton("Red archer");
 		spe1red.addActionListener(new rArcher());
 		JPanel spe1Panel = new JPanel();
 		spe1Panel.setLayout(new FlowLayout());
@@ -108,11 +127,11 @@ public class gameScreen  extends JFrame{
 		spe1Panel.add(spe1white);
 		spe1Panel.add(spe1red);
 		
-		JButton spe2black = new JButton("Black mage");
+		spe2black = new JButton("Black mage");
 		spe2black.addActionListener(new bMage());
-		JButton spe2white = new JButton("White mage");
+		spe2white = new JButton("White mage");
 		spe2white.addActionListener(new wMage());
-		JButton spe2red = new JButton("Red mage");
+		spe2red = new JButton("Red mage");
 		spe2red.addActionListener(new rMage());
 		JPanel spe2Panel = new JPanel();
 		spe2Panel.setLayout(new FlowLayout());
@@ -120,11 +139,11 @@ public class gameScreen  extends JFrame{
 		spe2Panel.add(spe2white);
 		spe2Panel.add(spe2red);
 		
-		JButton spe3black = new JButton("Black monk");
+		spe3black = new JButton("Black monk");
 		spe3black.addActionListener(new bMonk());
-		JButton spe3white = new JButton("White monk");
+		spe3white = new JButton("White monk");
 		spe3white.addActionListener(new wMonk());
-		JButton spe3red = new JButton("Red monk");
+		spe3red = new JButton("Red monk");
 		spe3red.addActionListener(new rMonk());
 		JPanel spe3Panel = new JPanel();
 		spe3Panel.setLayout(new FlowLayout());
@@ -132,11 +151,11 @@ public class gameScreen  extends JFrame{
 		spe3Panel.add(spe3white);
 		spe3Panel.add(spe3red);
 		
-		JButton spe4black = new JButton("Black warrior");
+		spe4black = new JButton("Black warrior");
 		spe4black.addActionListener(new bWarrior());
-		JButton spe4white = new JButton("White warrior");
+		spe4white = new JButton("White warrior");
 		spe4white.addActionListener(new wWarrior());
-		JButton spe4red = new JButton("Red warrior");
+		spe4red = new JButton("Red warrior");
 		spe4red.addActionListener(new rWarrior());
 		JPanel spe4Panel = new JPanel();
 		spe4Panel.setLayout(new FlowLayout());
@@ -148,13 +167,16 @@ public class gameScreen  extends JFrame{
 		cancelButton.addActionListener(new ActionCancel());
 		JButton passButton = new JButton("Pass");
 		passButton.addActionListener(new ActionPass());
-		JCheckBox noobMode = new JCheckBox("Beginner mode");
+		JButton ActuScore = new JButton("Actualize Score");
+		ActuScore.addActionListener(new ActionActu());
+		//JCheckBox noobMode = new JCheckBox("Beginner mode");
 		JPanel buttonPanel = new JPanel();
 		buttonPanel.setBorder(BorderFactory.createLineBorder(Color.black,1));
 		buttonPanel.setLayout(new GridLayout());
 		buttonPanel.add(cancelButton);
 		buttonPanel.add(passButton);
-		buttonPanel.add(noobMode);
+		//buttonPanel.add(noobMode);
+		buttonPanel.add(ActuScore);
 		
 		JPanel b2 = new JPanel();
 		b2.setLayout(new BoxLayout(b2, BoxLayout.PAGE_AXIS));
@@ -179,7 +201,12 @@ public class gameScreen  extends JFrame{
 	class ActionPass implements ActionListener{
 		public void actionPerformed(ActionEvent e) {
 			myGoban.Pass();
-			
+		}
+	}
+	
+	class ActionActu implements ActionListener{
+		public void actionPerformed(ActionEvent e) {
+			ShowScore();
 		}
 	}
 	
@@ -199,72 +226,108 @@ public class gameScreen  extends JFrame{
 	class bArcher implements ActionListener{
 		public void actionPerformed(ActionEvent e) {
 			myGoban.setType("archer");
+			spe1black.setEnabled(false);
 		}
 	}
 	
 	class wArcher implements ActionListener{
 		public void actionPerformed(ActionEvent e) {
 			myGoban.setType("archer");
+			spe1white.setEnabled(false);
 		}
 	}
 	
 	class rArcher implements ActionListener{
 		public void actionPerformed(ActionEvent e) {
 			myGoban.setType("archer");
+			spe1red.setEnabled(false);
 		}
 	}
 	
 	class bMage implements ActionListener{
 		public void actionPerformed(ActionEvent e) {
 			myGoban.setType("mage");
+			spe2black.setEnabled(false);
 		}
 	}
 	
 	class wMage implements ActionListener{
 		public void actionPerformed(ActionEvent e) {
 			myGoban.setType("mage");
+			spe2white.setEnabled(false);
 		}
 	}
 	
 	class rMage implements ActionListener{
 		public void actionPerformed(ActionEvent e) {
 			myGoban.setType("mage");
+			spe2red.setEnabled(false);
 		}
 	}
 	
 	class bMonk implements ActionListener{
 		public void actionPerformed(ActionEvent e) {
 			myGoban.setType("monk");
+			spe3black.setEnabled(false);
 		}
 	}
 	
 	class wMonk implements ActionListener{
 		public void actionPerformed(ActionEvent e) {
 			myGoban.setType("monk");
+			spe3white.setEnabled(false);
 		}
 	}
 	
 	class rMonk implements ActionListener{
 		public void actionPerformed(ActionEvent e) {
 			myGoban.setType("monk");
+			spe3red.setEnabled(false);
 		}
 	}
 	
 	class bWarrior implements ActionListener{
 		public void actionPerformed(ActionEvent e) {
 			myGoban.setType("warrior");
+			spe4black.setEnabled(false);
 		}
 	}
 	
 	class wWarrior implements ActionListener{
 		public void actionPerformed(ActionEvent e) {
 			myGoban.setType("warrior");
+			spe4white.setEnabled(false);
 		}
 	}
 	
 	class rWarrior implements ActionListener{
 		public void actionPerformed(ActionEvent e) {
 			myGoban.setType("warrior");
+			spe4red.setEnabled(false);
 		}
 	}
+	
+	public void setBScore(int i){
+		String BScore =  Integer.toString(i);
+		blackScore.setText(BScore);
+	}
+	public void setWScore(int i){
+		String WScore =  Integer.toString(i);
+		whiteScore.setText(WScore);
+	}
+	public void setRScore(int i){
+		String RScore =  Integer.toString(i);
+		redScore.setText(RScore);
+	}
+	
+	public void ShowScore(){
+		Intersection[][] GobTab = myGoban.getTab();
+		int Bs = Score.BScoreCount(GobTab);
+		int Ws = Score.WScoreCount(GobTab);
+		int Rs = Score.RScoreCount(GobTab);
+		setBScore(Bs);
+		setWScore(Ws);
+		setRScore(Rs);
+	}
+
 }
