@@ -212,6 +212,7 @@ public class DrawGoban extends JPanel implements MouseListener{
 		}
 	}
 	
+	//Retourne un coup en avant.
 	public void Undo() {
 		if (lastIntersection != null) {
 			lastIntersection.setColor(null);
