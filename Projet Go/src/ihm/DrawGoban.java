@@ -12,6 +12,7 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Scanner;
 
 import javax.imageio.ImageIO;
@@ -38,29 +39,90 @@ public class DrawGoban extends JPanel implements MouseListener{
     Intersection[][] tabInter = new Intersection[20][20];
     private Intersection lastIntersection = null;
 	private String type = "normal";
+	public gameScreen myGameScreen;
+	public Image img;
 	
     public DrawGoban(int nbPlayer){
+    	try {
+			img = ImageIO.read(new File("/Users/Antoine/Desktop/projet GO/img GO/GobanFinal.png"));
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
     	if (nbPlayer == 2){
     		Player = 10;
     		PassNumLim = 2;
     		ActualPassNum = 2;
     	}
-    	//Create a "button" on each intersection.
+    	//Create an object Intersection on each intersection.
     	for(int lig=0;lig<20;lig++){
     		for(int col=0;col<20;col++){
     			tabInter[lig][col] = new Intersection(13+col*28,13+lig*28,null);
     		}
     	}
+    	for (int i=0; i<20; i++) {
+			for (int j=0; j<20; j++){
+				if (i>0 && i<19 && j>0 && j<19) {
+					tabInter[i][j].setLN(tabInter[i-1][j]);
+					tabInter[i][j].setLS(tabInter[i+1][j]);
+					tabInter[i][j].setLD(tabInter[i][j+1]);
+					tabInter[i][j].setLG(tabInter[i][j-1]);
+				}
+				if (i==0 && j==0){
+					tabInter[i][j].setLN(new Intersection());
+					tabInter[i][j].setLS(tabInter[i+1][j]);
+					tabInter[i][j].setLD(tabInter[i][j+1]);
+					tabInter[i][j].setLG(new Intersection());
+				}
+				if (i==0 && j==19){
+					tabInter[i][j].setLN(new Intersection());
+					tabInter[i][j].setLS(tabInter[i+1][j]);
+					tabInter[i][j].setLD(new Intersection());
+					tabInter[i][j].setLG(tabInter[i][j-1]);
+				}
+				if (i==19 && j==0){
+					tabInter[i][j].setLN(tabInter[i-1][j]);
+					tabInter[i][j].setLS(new Intersection());
+					tabInter[i][j].setLD(tabInter[i][j+1]);
+					tabInter[i][j].setLG(new Intersection());
+				}
+				if (i==19 && j==19){
+					tabInter[i][j].setLN(tabInter[i-1][j]);
+					tabInter[i][j].setLS(new Intersection());
+					tabInter[i][j].setLD(new Intersection());
+					tabInter[i][j].setLG(tabInter[i][j-1]);
+				}
+				if (i==0 && j!=0 && j!=19){
+					tabInter[i][j].setLN(new Intersection());
+					tabInter[i][j].setLS(tabInter[i+1][j]);
+					tabInter[i][j].setLD(tabInter[i][j+1]);
+					tabInter[i][j].setLG(tabInter[i][j-1]);
+				}
+				if (i==19 && j!=19 && j!=0){
+					tabInter[i][j].setLN(tabInter[i-1][j]);
+					tabInter[i][j].setLS(new Intersection());
+					tabInter[i][j].setLD(tabInter[i][j+1]);
+					tabInter[i][j].setLG(tabInter[i][j-1]);
+				}
+				if (j==0 && i!=0 && i!=19){
+					tabInter[i][j].setLN(tabInter[i-1][j]);
+					tabInter[i][j].setLS(tabInter[i+1][j]);
+					tabInter[i][j].setLD(tabInter[i][j+1]);
+					tabInter[i][j].setLG(new Intersection());
+				}
+				if (j==19 && i!= 19 && i!=0){
+					tabInter[i][j].setLN(tabInter[i-1][j]);
+					tabInter[i][j].setLS(tabInter[i+1][j]);
+					tabInter[i][j].setLD(new Intersection());
+					tabInter[i][j].setLG(tabInter[i][j-1]);
+				}
+			}
+    	}
     	this.addMouseListener(this);
     }
     
 	public void paintComponent(Graphics g){
-		try {
-		Image img = ImageIO.read(new File("/Users/Antoine/Desktop/projet GO/img GO/GobanFinal.png")); //Read the image 
 		g.drawImage(img, 0, 0, 556, 556, this);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
 		this.drawTabPng(g);
 	}
 	
@@ -73,14 +135,31 @@ public class DrawGoban extends JPanel implements MouseListener{
 				else {
 					int x = tabInter[i][j].getAbscisse();
 					int y = tabInter[i][j].getOrdonnee();
-					if (Territory.eye(tabInter, i, j) == true){
+					/*if (Territory.eye(tabInter, i, j) == true){
 						tabInter[i][j].setColor(null);
+					}*/
+					Territory.ResetList();
+					Territory.ResetEns();
+					for (int i1=0; i1<20; i1++) {
+						for (int j1=0; j1<20; j1++){
+							tabInter[i1][j1].setCaller(null);
+							tabInter[i1][j1].setCalled(null);
+						}
 					}
+					Territory.EnsembleMC(tabInter[i][j]);
+					if (Territory.GrandTer(Territory.Ensemble) == true){
+						ArrayList<Intersection> EnsTest = Territory.Ensemble;
+						for(int a = 0; a < EnsTest.size(); a++){
+							EnsTest.get(a).setColor(null);
+						}
+					}
+					
 					g.setColor(tabInter[i][j].getColor());
 					g.fillOval(x-12, y-12, 24, 24);
 				}
 			}
 		}
+		this.repaint();
 	}
 	
 	private void addPngInTab(int x, int y) {
@@ -285,6 +364,11 @@ public class DrawGoban extends JPanel implements MouseListener{
 		}
 	}
 
+	public void setGameScreen(gameScreen myGS){
+		myGameScreen = myGS;
+	}
+	
+	
 	@Override
 	public void mouseClicked(MouseEvent e) {
 		// TODO Auto-generated method stub

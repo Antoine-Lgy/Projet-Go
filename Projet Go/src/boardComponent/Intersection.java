@@ -17,12 +17,23 @@ public class Intersection {
 	protected int abscisse;
 	protected int ordonnee;
 	protected Color bgColor;
+	protected Color bord = Color.GRAY;
 	protected Intersection prevIntersection = null;
+	protected Intersection LN = null;
+	protected Intersection LS = null;
+	protected Intersection LD = null;
+	protected Intersection LG = null;
+	protected Intersection Caller = null;
+	protected Intersection Called = null;
+	
 
 	public Intersection(int abs, int ord, Color _C) {
 		this.abscisse = abs;
 		this.ordonnee = ord;
 		this.bgColor = _C;
+	}
+	public Intersection(){
+		this.bgColor = bord;
 	}
 	
 	public int getAbscisse() {
@@ -48,5 +59,41 @@ public class Intersection {
 	}
 	public Intersection getPrevIntersection() {
 		return prevIntersection;
+	}
+	public void setLN(Intersection lN) {
+		LN = lN;
+	}
+	public void setLS(Intersection lS) {
+		LS = lS;
+	}
+	public void setLD(Intersection lD) {
+		LD = lD;
+	}
+	public void setLG(Intersection lG) {
+		LG = lG;
+	}
+	public Intersection getLN() {
+		return LN;
+	}
+	public Intersection getLS() {
+		return LS;
+	}
+	public Intersection getLD() {
+		return LD;
+	}
+	public Intersection getLG() {
+		return LG;
+	}
+	public void setCaller(Intersection caller) {
+		Caller = caller;
+	}
+	public Intersection getCaller() {
+		return Caller;
+	}
+	public void setCalled(Intersection called) {
+		Called = called;
+	}
+	public Intersection getCalled() {
+		return Called;
 	}
 }
