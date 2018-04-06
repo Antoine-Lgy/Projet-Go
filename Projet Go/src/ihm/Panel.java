@@ -11,7 +11,7 @@ import javax.swing.JPanel;
 public class Panel extends JPanel {
 	public void paintComponent (Graphics g) {
 		try {
-			Image img = ImageIO.read(new File ("/Users/Antoine/Desktop/projet GO/img GO/go.jpg"));
+			Image img = ImageIO.read(new File (Imagerie.getImgFont()));
 			g.drawImage(img, 0, 0, this.getWidth(), this.getHeight(), this);
 		}
 		catch (IOException e) {

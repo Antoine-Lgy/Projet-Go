@@ -49,7 +49,7 @@ public class secondScreen extends JFrame{
 		b1.setLayout(new FlowLayout());
 		JPanel comboxPanel = new JPanel();
 		comboxPanel.setLayout(new FlowLayout());
-		Object[] elements = new Object[]{"J vs J", "J vs IA", "IA vs IA", "J vs J vs J", "J vs J vs IA", "J vs IA vs IA"};
+		Object[] elements = new Object[]{"J vs J", "J vs IA", "J vs J vs J", "J vs J vs IA", "J vs IA vs IA"};
 		compoList = new JComboBox(elements);
 		comboxPanel.add(compoList);
 		
@@ -89,7 +89,7 @@ public class secondScreen extends JFrame{
 	
 	class start2Button implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
-			if (getCompo().equals("J vs J") || getCompo().equals("J vs IA") || getCompo().equals("IA vs IA")){
+			if (getCompo().equals("J vs J") || getCompo().equals("J vs IA")){
 				new gameScreen(2);
 				dispose();
 			}

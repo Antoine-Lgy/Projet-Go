@@ -31,6 +31,10 @@ import moteur.NormalPiece;
 import moteur.Score;
 import moteur.WarriorPiece;
 
+/**
+ * @author Antoine
+ *
+ */
 public class DrawGoban extends JPanel implements MouseListener{
 
 	int Player = 0;
@@ -44,7 +48,7 @@ public class DrawGoban extends JPanel implements MouseListener{
 	
     public DrawGoban(int nbPlayer){
     	try {
-			img = ImageIO.read(new File("/Users/Antoine/Desktop/projet GO/img GO/GobanFinal.png"));
+			img = ImageIO.read(new File(Imagerie.getImgGoban()));
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
