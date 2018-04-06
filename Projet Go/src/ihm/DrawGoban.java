@@ -36,7 +36,7 @@ public class DrawGoban extends JPanel implements MouseListener{
 	int Player = 0;
 	int PassNumLim = 3;
 	int ActualPassNum = 3;
-    Intersection[][] tabInter = new Intersection[20][20];
+	Intersection[][] tabInter = new Intersection[20][20];
     private Intersection lastIntersection = null;
 	private String type = "normal";
 	public gameScreen myGameScreen;
@@ -60,6 +60,7 @@ public class DrawGoban extends JPanel implements MouseListener{
     			tabInter[lig][col] = new Intersection(13+col*28,13+lig*28,null);
     		}
     	}
+    	//Set each piece's liberty.
     	for (int i=0; i<20; i++) {
 			for (int j=0; j<20; j++){
 				if (i>0 && i<19 && j>0 && j<19) {
@@ -121,11 +122,13 @@ public class DrawGoban extends JPanel implements MouseListener{
     	this.addMouseListener(this);
     }
     
+    //Draw the Screen.
 	public void paintComponent(Graphics g){
 		g.drawImage(img, 0, 0, 556, 556, this);
 		this.drawTabPng(g);
 	}
 	
+	//Draw the table of Color.
 	private void drawTabPng(Graphics g) {
 		for (int i=0; i<20; i++) {
 			for (int j=0; j<20; j++){
@@ -135,9 +138,6 @@ public class DrawGoban extends JPanel implements MouseListener{
 				else {
 					int x = tabInter[i][j].getAbscisse();
 					int y = tabInter[i][j].getOrdonnee();
-					/*if (Territory.eye(tabInter, i, j) == true){
-						tabInter[i][j].setColor(null);
-					}*/
 					Territory.ResetList();
 					Territory.ResetEns();
 					for (int i1=0; i1<20; i1++) {
@@ -146,7 +146,9 @@ public class DrawGoban extends JPanel implements MouseListener{
 							tabInter[i1][j1].setCalled(null);
 						}
 					}
+					//Create a group of the same color piece, starting with the tabInter[i][j].
 					Territory.EnsembleMC(tabInter[i][j]);
+					//If the group is surrounded according to the rules, then delete them.
 					if (Territory.GrandTer(Territory.Ensemble) == true){
 						ArrayList<Intersection> EnsTest = Territory.Ensemble;
 						for(int a = 0; a < EnsTest.size(); a++){
@@ -162,136 +164,137 @@ public class DrawGoban extends JPanel implements MouseListener{
 		this.repaint();
 	}
 	
-	private void addPngInTab(int x, int y) {
+	//Put Color in tabInter according to the player turn, and deal with piece's special action.
+	private void addColInTab(int x, int y) {
 		Color white,black,red ;
 		white= Color.WHITE;//image d'une pierre blanche
 		black= Color.BLACK;//image d'une pierre noir
 		red= Color.RED;//image d'une pierre rouge
 		if(tabInter[y][x].getColor()==null) {
 			if (Territory.eye(tabInter, y, x) == false){
-			if (type=="normal") {
-				if(Player==0){
-					NormalPiece.Normal(tabInter,black,y,x);
-					Player=1;
+				if (type=="normal") {
+					if(Player==0){
+						NormalPiece.Normal(tabInter,black,y,x);
+						Player=1;
+					}
+					else if (Player==1) {
+						NormalPiece.Normal(tabInter,white,y,x);
+						Player=2;
+					}
+					else if (Player==2) {
+						NormalPiece.Normal(tabInter,red,y,x);
+						Player=0;
+					}
+					else if(Player==10){
+						NormalPiece.Normal(tabInter,black,y,x);
+						Player=11;
+					}
+					else if(Player==11){
+						NormalPiece.Normal(tabInter,white,y,x);
+						Player=10;
+					}
 				}
-				else if (Player==1) {
-					NormalPiece.Normal(tabInter,white,y,x);
-					Player=2;
+				if (type=="warrior") {
+					if(Player==0){
+						WarriorPiece.CallToArms(tabInter,black,y,x);
+						Player=1;
+					}
+					else if (Player==1) {
+						WarriorPiece.CallToArms(tabInter,white,y,x);
+						Player=2;
+					}
+					else if (Player==2) {
+						WarriorPiece.CallToArms(tabInter,red,y,x);
+						Player=0;
+					}
+					else if(Player==10){
+						WarriorPiece.CallToArms(tabInter,black,y,x);
+						Player=11;
+					}
+					else if(Player==11){
+						WarriorPiece.CallToArms(tabInter,white,y,x);
+						Player=10;
+					}
+					type = "normal";
 				}
-				else if (Player==2) {
-					NormalPiece.Normal(tabInter,red,y,x);
-					Player=0;
+				if (type=="monk") {
+					if(Player==0){
+						MonkPiece.Convert(tabInter,black,y,x);
+						Player=1;
+					}
+					else if (Player==1) {
+						MonkPiece.Convert(tabInter,white,y,x);
+						Player=2;
+					}
+					else if (Player==2) {
+						MonkPiece.Convert(tabInter,red,y,x);
+						Player=0;
+					}
+					else if(Player==10){
+						MonkPiece.Convert(tabInter,black,y,x);
+						Player=11;
+					}
+					else if(Player==11){
+						MonkPiece.Convert(tabInter,white,y,x);
+						Player=10;
+					}
+					type = "normal";
 				}
-				else if(Player==10){
-					NormalPiece.Normal(tabInter,black,y,x);
-					Player=11;
+				if (type=="mage") {
+					if(Player==0){
+						MagePiece.Blast(tabInter,black,y,x);
+						Player=1;
+					}
+					else if (Player==1) {
+						MagePiece.Blast(tabInter,white,y,x);
+						Player=2;
+					}
+					else if (Player==2) {
+						MagePiece.Blast(tabInter,red,y,x);
+						Player=0;
+					}
+					else if(Player==10){
+						MagePiece.Blast(tabInter,black,y,x);
+						Player=11;
+					}
+					else if(Player==11){
+						MagePiece.Blast(tabInter,white,y,x);
+						Player=10;
+					}
+					type = "normal";
 				}
-				else if(Player==11){
-					NormalPiece.Normal(tabInter,white,y,x);
-					Player=10;
+				if (type=="archer") {
+					JOptionPane jop = new JOptionPane();
+					String direc = jop.showInputDialog(null, "Chose a direction (right, left, up, down):", "Arrow", JOptionPane.QUESTION_MESSAGE);
+					if(Player==0){
+						ArcherPiece.Arrow(tabInter,black,y,x,direc);
+						Player=1;
+					}
+					else if (Player==1) {
+						ArcherPiece.Arrow(tabInter,white,y,x,direc);
+						Player=2;
+					}
+					else if (Player==2) {
+						ArcherPiece.Arrow(tabInter,red,y,x,direc);
+						Player=0;
+					}
+					else if(Player==10){
+						ArcherPiece.Arrow(tabInter,black,y,x,direc);
+						Player=11;
+					}
+					else if(Player==11){
+						ArcherPiece.Arrow(tabInter,white,y,x,direc);
+						Player=10;
+					}
+					type = "normal";
 				}
+				tabInter[y][x].setPrevIntersection(lastIntersection);
+				lastIntersection = tabInter[y][x];
 			}
-			if (type=="warrior") {
-				if(Player==0){
-					WarriorPiece.CallToArms(tabInter,black,y,x);
-					Player=1;
-				}
-				else if (Player==1) {
-					WarriorPiece.CallToArms(tabInter,white,y,x);
-					Player=2;
-				}
-				else if (Player==2) {
-					WarriorPiece.CallToArms(tabInter,red,y,x);
-					Player=0;
-				}
-				else if(Player==10){
-					WarriorPiece.CallToArms(tabInter,black,y,x);
-					Player=11;
-				}
-				else if(Player==11){
-					WarriorPiece.CallToArms(tabInter,white,y,x);
-					Player=10;
-				}
-				type = "normal";
-			}
-			if (type=="monk") {
-				if(Player==0){
-					MonkPiece.Convert(tabInter,black,y,x);
-					Player=1;
-				}
-				else if (Player==1) {
-					MonkPiece.Convert(tabInter,white,y,x);
-					Player=2;
-				}
-				else if (Player==2) {
-					MonkPiece.Convert(tabInter,red,y,x);
-					Player=0;
-				}
-				else if(Player==10){
-					MonkPiece.Convert(tabInter,black,y,x);
-					Player=11;
-				}
-				else if(Player==11){
-					MonkPiece.Convert(tabInter,white,y,x);
-					Player=10;
-				}
-				type = "normal";
-			}
-			if (type=="mage") {
-				if(Player==0){
-					MagePiece.Blast(tabInter,black,y,x);
-					Player=1;
-				}
-				else if (Player==1) {
-					MagePiece.Blast(tabInter,white,y,x);
-					Player=2;
-				}
-				else if (Player==2) {
-					MagePiece.Blast(tabInter,red,y,x);
-					Player=0;
-				}
-				else if(Player==10){
-					MagePiece.Blast(tabInter,black,y,x);
-					Player=11;
-				}
-				else if(Player==11){
-					MagePiece.Blast(tabInter,white,y,x);
-					Player=10;
-				}
-				type = "normal";
-			}
-			if (type=="archer") {
-				JOptionPane jop = new JOptionPane();
-			    String direc = jop.showInputDialog(null, "Chose a direction (right, left, up, down):", "Arrow", JOptionPane.QUESTION_MESSAGE);
-				if(Player==0){
-					ArcherPiece.Arrow(tabInter,black,y,x,direc);
-					Player=1;
-				}
-				else if (Player==1) {
-					ArcherPiece.Arrow(tabInter,white,y,x,direc);
-					Player=2;
-				}
-				else if (Player==2) {
-					ArcherPiece.Arrow(tabInter,red,y,x,direc);
-					Player=0;
-				}
-				else if(Player==10){
-					ArcherPiece.Arrow(tabInter,black,y,x,direc);
-					Player=11;
-				}
-				else if(Player==11){
-					ArcherPiece.Arrow(tabInter,white,y,x,direc);
-					Player=10;
-				}
-				type = "normal";
-			}
-			tabInter[y][x].setPrevIntersection(lastIntersection);
-			lastIntersection = tabInter[y][x];
-		}
 		}
 	}
 	
-	//Retourne un coup en avant.
+	//Undo the last turn.
 	public void Undo() {
 		if (lastIntersection != null) {
 			lastIntersection.setColor(null);
@@ -315,6 +318,7 @@ public class DrawGoban extends JPanel implements MouseListener{
 		}
 	}
 	
+	//Pass the current player turn.
 	public void Pass() {
 		if(Player==0){
 			Player=1;
@@ -374,7 +378,7 @@ public class DrawGoban extends JPanel implements MouseListener{
 		// TODO Auto-generated method stub
 		int xclic = e.getX()/28;
 		int yclic = e.getY()/28;
-		this.addPngInTab(xclic, yclic);
+		this.addColInTab(xclic, yclic);
 		this.repaint();
 		ActualPassNum = PassNumLim;
 	}

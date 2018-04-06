@@ -22,6 +22,7 @@ public class Territory {
 		Ensemble = new ArrayList<Intersection>();
 	}
 	
+	//Prevent posing a piece in an eye.
 	public static boolean eye(Intersection[][] board, int x, int y){
 		Intersection currentInter = board[x][y];
 		if(x>0 && x<19 && y>0 && y<19){
@@ -103,8 +104,9 @@ public class Territory {
 		return false;
 	}
 	
+	//Return true if the group is surrounded by an other color or the edge of the board.
 	public static boolean GrandTer(ArrayList<Intersection> EnsTest){
-		//NUM2
+		
 		testAutour(EnsTest.get(0));
 		if (ListeColAutour.size() >= 4){
 			Color CaptCol = null;
@@ -127,52 +129,9 @@ public class Territory {
 		else{
 			return false;
 		}
-		
-		// NUM1
-		/*Color CurCol = EnsTest.get(0).getColor();
-		Color CurCaptCol;
-		Color NewCaptCol;
-		if (CurCol == Color.WHITE) {
-			CurCaptCol = Color.BLACK;
-		}
-		else {
-			CurCaptCol = Color.WHITE;
-		}
-		for(int i = 0; i < EnsTest.size(); i++){
-			if(EnsTest.get(i).getLN().getColor() == null || EnsTest.get(i).getLS().getColor() == null || EnsTest.get(i).getLD().getColor() == null || EnsTest.get(i).getLG().getColor() == null){
-				return false;
-			}
-			else{
-				if (EnsTest.get(i).getLN().getColor() != CurCol && EnsTest.get(i).getLN().getColor() != Color.GRAY){
-					NewCaptCol = EnsTest.get(i).getLN().getColor();
-					if (NewCaptCol != CurCaptCol){
-						return false;
-					}
-				}
-				if (EnsTest.get(i).getLS().getColor() != CurCol && EnsTest.get(i).getLS().getColor() != Color.GRAY){
-					NewCaptCol = EnsTest.get(i).getLS().getColor();
-					if (NewCaptCol != CurCaptCol){
-						return false;
-					}
-				}
-				if (EnsTest.get(i).getLD().getColor() != CurCol && EnsTest.get(i).getLD().getColor() != Color.GRAY){
-					NewCaptCol = EnsTest.get(i).getLD().getColor();
-					if (NewCaptCol != CurCaptCol){
-						return false;
-					}
-				}
-				if (EnsTest.get(i).getLG().getColor() != CurCol && EnsTest.get(i).getLG().getColor() != Color.GRAY){
-					NewCaptCol = EnsTest.get(i).getLG().getColor();
-					if (NewCaptCol != CurCaptCol){
-						return false;
-					}
-				}
-			}
-	    }
-		return true;*/
-		
 	}
 	
+	//Create an arrayList of close fitting piece, and verify if its surrounded by different colors pieces.
 	public static void testAutour(Intersection inter){
 		Color CurCol = inter.getColor();
 		Color LNCol = null;
@@ -227,6 +186,7 @@ public class Territory {
 		}
 	}
 	
+	//Create an arrayList with piece of the same color, close fitting.
 	public static void EnsembleMC(Intersection CurInter) {
 		Color LaColor = CurInter.getColor();
 		if (CurInter.getColor() != null){
