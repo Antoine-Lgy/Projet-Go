@@ -314,11 +314,11 @@ public class gameScreen  extends JFrame{
 		redScore.setText(RScore);
 	}
 	
-	public void ShowScore(){
+	public void ShowScore(int scoreBlTer,int scoreWhTer,int scoreReTer){
 		Intersection[][] GobTab = myGoban.getTab();
-		int Bs = Score.BScoreCount(GobTab);
-		int Ws = Score.WScoreCount(GobTab);
-		int Rs = Score.RScoreCount(GobTab);
+		int Bs = Score.BScoreCount(GobTab) + scoreBlTer;
+		int Ws = Score.WScoreCount(GobTab) + scoreWhTer;
+		int Rs = Score.RScoreCount(GobTab) + scoreReTer;
 		setBScore(Bs);
 		setWScore(Ws);
 		setRScore(Rs);

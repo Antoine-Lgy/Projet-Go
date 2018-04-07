@@ -14,6 +14,7 @@ public class Territory {
 	
 	protected static ArrayList<Color> ListeColAutour = new ArrayList<Color>();
 	public static ArrayList<Intersection> Ensemble = new ArrayList<Intersection>();
+	public static Color CaptureColor = null;
 	
 	public static void ResetList(){
 		ListeColAutour = new ArrayList<Color>();
@@ -107,6 +108,7 @@ public class Territory {
 	//Return true if the group is surrounded by an other color or the edge of the board.
 	public static boolean GrandTer(ArrayList<Intersection> EnsTest){
 		
+		CaptureColor = null;
 		testAutour(EnsTest.get(0));
 		if (ListeColAutour.size() >= 4){
 			Color CaptCol = null;
@@ -118,6 +120,7 @@ public class Territory {
 				else{
 					if (CaptCol == null){
 						CaptCol = ListeColAutour.get(i);
+						CaptureColor = CaptCol;
 					}
 				}
 				if (CaptCol != ListeColAutour.get(i) || ListeColAutour.get(i) == null){
@@ -138,7 +141,6 @@ public class Territory {
 		Color LSCol = null;
 		Color LDCol = null;
 		Color LGCol = null;
-		Color CurCaptCol = null;
 		
 		if (inter.getLN().getColor() == CurCol){
 			if (inter.getCaller() != inter.getLN() && inter.getCalled() != inter.getLN()){
@@ -213,6 +215,33 @@ public class Territory {
 				if (!Ensemble.contains(CurInter.getLO())){
 					Ensemble.add(CurInter.getLO());
 					EnsembleMC(CurInter.getLO());
+				}
+			}
+		}
+	}
+	
+	public static void EnsembleNULL(Intersection CurInter) {
+		Color LaColor = CurInter.getColor();
+		if (CurInter.getColor() == null){
+			Ensemble.add(CurInter);
+			if (CurInter.getLN().getColor() == LaColor){
+				if (!Ensemble.contains(CurInter.getLN())){
+					EnsembleNULL(CurInter.getLN());
+				}
+			}
+			if (CurInter.getLS().getColor() == LaColor){
+				if (!Ensemble.contains(CurInter.getLS())){
+					EnsembleNULL(CurInter.getLS());
+				}
+			}
+			if (CurInter.getLE().getColor() == LaColor){
+				if (!Ensemble.contains(CurInter.getLE())){
+					EnsembleNULL(CurInter.getLE());
+				}
+			}
+			if (CurInter.getLO().getColor() == LaColor){
+				if (!Ensemble.contains(CurInter.getLO())){
+					EnsembleNULL(CurInter.getLO());
 				}
 			}
 		}

@@ -28,19 +28,23 @@ import moteur.WarriorPiece;
  */
 public class DrawGoban extends JPanel implements MouseListener{
 
+	int Taille = 20;
 	int Player = 0;
 	int PassNumLim = 3;
 	int ActualPassNum = 3;
-	Intersection[][] tabInter = new Intersection[20][20];
+	Intersection[][] tabInter = new Intersection[Taille][Taille];
     private Intersection lastIntersection = null;
 	private String type = "normal";
 	public gameScreen myGameScreen;
 	public Image img;
 	int nbIA = 0;
 	int nbPlayer = 0;
-	Intersection[][] PrevTabInter = new Intersection[20][20];
+	Intersection[][] PrevTabInter = new Intersection[Taille][Taille];
 	IA MyIAWhite = new IA();
 	IA MyIARed = new IA();
+	int scoreBlTer = 0;
+	int scoreWhTer = 0;
+	int scoreReTer = 0;
 	
     public DrawGoban(int nbPlayer,int nbIA){
     	try {
@@ -57,15 +61,15 @@ public class DrawGoban extends JPanel implements MouseListener{
     		ActualPassNum = 2;
     	}
     	//Create an object Intersection on each intersection.
-    	for(int lig=0;lig<20;lig++){
-    		for(int col=0;col<20;col++){
+    	for(int lig=0;lig<Taille;lig++){
+    		for(int col=0;col<Taille;col++){
     			tabInter[lig][col] = new Intersection(col,lig,null);
     		}
     	}
     	//Set each piece's liberty.
-    	for (int i=0; i<20; i++) {
-			for (int j=0; j<20; j++){
-				if (i>0 && i<19 && j>0 && j<19) {
+    	for (int i=0; i<Taille; i++) {
+			for (int j=0; j<Taille; j++){
+				if (i>0 && i<(Taille-1) && j>0 && j<(Taille-1)) {
 					tabInter[i][j].setLN(tabInter[i-1][j]);
 					tabInter[i][j].setLS(tabInter[i+1][j]);
 					tabInter[i][j].setLD(tabInter[i][j+1]);
@@ -85,7 +89,7 @@ public class DrawGoban extends JPanel implements MouseListener{
 					tabInter[i][j].setLSE(tabInter[i+1][j+1]);
 					tabInter[i][j].setLSO(new Intersection());
 				}
-				if (i==0 && j==19){
+				if (i==0 && j==(Taille-1)){
 					tabInter[i][j].setLN(new Intersection());
 					tabInter[i][j].setLS(tabInter[i+1][j]);
 					tabInter[i][j].setLD(new Intersection());
@@ -95,7 +99,7 @@ public class DrawGoban extends JPanel implements MouseListener{
 					tabInter[i][j].setLSE(new Intersection());
 					tabInter[i][j].setLSO(tabInter[i+1][j-1]);
 				}
-				if (i==19 && j==0){
+				if (i==(Taille-1) && j==0){
 					tabInter[i][j].setLN(tabInter[i-1][j]);
 					tabInter[i][j].setLS(new Intersection());
 					tabInter[i][j].setLD(tabInter[i][j+1]);
@@ -105,7 +109,7 @@ public class DrawGoban extends JPanel implements MouseListener{
 					tabInter[i][j].setLSE(new Intersection());
 					tabInter[i][j].setLSO(new Intersection());
 				}
-				if (i==19 && j==19){
+				if (i==(Taille-1) && j==(Taille-1)){
 					tabInter[i][j].setLN(tabInter[i-1][j]);
 					tabInter[i][j].setLS(new Intersection());
 					tabInter[i][j].setLD(new Intersection());
@@ -115,7 +119,7 @@ public class DrawGoban extends JPanel implements MouseListener{
 					tabInter[i][j].setLSE(new Intersection());
 					tabInter[i][j].setLSO(new Intersection());
 				}
-				if (i==0 && j!=0 && j!=19){
+				if (i==0 && j!=0 && j!=(Taille-1)){
 					tabInter[i][j].setLN(new Intersection());
 					tabInter[i][j].setLS(tabInter[i+1][j]);
 					tabInter[i][j].setLD(tabInter[i][j+1]);
@@ -125,7 +129,7 @@ public class DrawGoban extends JPanel implements MouseListener{
 					tabInter[i][j].setLSE(tabInter[i+1][j+1]);
 					tabInter[i][j].setLSO(tabInter[i+1][j-1]);
 				}
-				if (i==19 && j!=19 && j!=0){
+				if (i==(Taille-1) && j!=(Taille-1) && j!=0){
 					tabInter[i][j].setLN(tabInter[i-1][j]);
 					tabInter[i][j].setLS(new Intersection());
 					tabInter[i][j].setLD(tabInter[i][j+1]);
@@ -135,7 +139,7 @@ public class DrawGoban extends JPanel implements MouseListener{
 					tabInter[i][j].setLSE(new Intersection());
 					tabInter[i][j].setLSO(new Intersection());
 				}
-				if (j==0 && i!=0 && i!=19){
+				if (j==0 && i!=0 && i!=(Taille-1)){
 					tabInter[i][j].setLN(tabInter[i-1][j]);
 					tabInter[i][j].setLS(tabInter[i+1][j]);
 					tabInter[i][j].setLD(tabInter[i][j+1]);
@@ -145,7 +149,7 @@ public class DrawGoban extends JPanel implements MouseListener{
 					tabInter[i][j].setLSE(tabInter[i+1][j+1]);
 					tabInter[i][j].setLSO(new Intersection());
 				}
-				if (j==19 && i!= 19 && i!=0){
+				if (j==(Taille-1) && i!= (Taille-1) && i!=0){
 					tabInter[i][j].setLN(tabInter[i-1][j]);
 					tabInter[i][j].setLS(tabInter[i+1][j]);
 					tabInter[i][j].setLD(new Intersection());
@@ -168,8 +172,8 @@ public class DrawGoban extends JPanel implements MouseListener{
 	
 	//Draw the table of Color.
 	private void drawTabPng(Graphics g) {
-		for (int i=0; i<20; i++) {
-			for (int j=0; j<20; j++){
+		for (int i=0; i<Taille; i++) {
+			for (int j=0; j<Taille; j++){
 				if (tabInter[i][j].getColor() == null){
 					
 				}
@@ -182,7 +186,6 @@ public class DrawGoban extends JPanel implements MouseListener{
 				}
 			}
 		}
-		//this.repaint();
 	}
 	
 	//Put Color in tabInter according to the player turn, and deal with piece's special action.
@@ -317,11 +320,12 @@ public class DrawGoban extends JPanel implements MouseListener{
 	
 	//Undo the last turn.
 	public void Undo() {
-		for (int i=0; i<20; i++) {
-			for (int j=0; j<20; j++){
+		for (int i=0; i<Taille; i++) {
+			for (int j=0; j<Taille; j++){
 				tabInter[i][j].setColor(PrevTabInter[i][j].getColor());
 			}
 		}
+		Calcul();
 		repaint();
 		if(Player==0){
 			Player=2;
@@ -338,7 +342,7 @@ public class DrawGoban extends JPanel implements MouseListener{
 		else if(Player==11){
 			Player=10;
 		}
-		myGameScreen.ShowScore();
+		myGameScreen.ShowScore(scoreBlTer, scoreWhTer, scoreReTer);
 	}
 	
 	//Pass the current player turn.
@@ -396,30 +400,24 @@ public class DrawGoban extends JPanel implements MouseListener{
 	}
 	
 	public void SaveTable(){
-		for (int i=0; i<20; i++) {
-			for (int j=0; j<20; j++){
+		for (int i=0; i<Taille; i++) {
+			for (int j=0; j<Taille; j++){
 				PrevTabInter[i][j] = tabInter[i][j].Myclone();
 			}
 		}
 	}
 	
-	@Override
-	public void mouseClicked(MouseEvent e) {
-		// TODO Auto-generated method stub
-		SaveTable();
-		int xclic = e.getX()/28;
-		int yclic = e.getY()/28;
-		this.addColInTab(xclic, yclic);
-		for (int i=0; i<20; i++) {
-			for (int j=0; j<20; j++){
+	public void Calcul(){
+		for (int i=0; i<Taille; i++) {
+			for (int j=0; j<Taille; j++){
 				if (tabInter[i][j].getColor() == null){
 					
 				}
 				else {
 					Territory.ResetList();
 					Territory.ResetEns();
-					for (int i1=0; i1<20; i1++) {
-						for (int j1=0; j1<20; j1++){
+					for (int i1=0; i1<Taille; i1++) {
+						for (int j1=0; j1<Taille; j1++){
 							tabInter[i1][j1].setCaller(null);
 							tabInter[i1][j1].setCalled(null);
 						}
@@ -436,16 +434,60 @@ public class DrawGoban extends JPanel implements MouseListener{
 				}
 			}
 		}
+		/*
+		scoreBlTer = 0;
+		scoreWhTer = 0;
+		scoreReTer = 0;
+		for (int i=0; i<Taille; i++) {
+			for (int j=0; j<Taille; j++){
+				if (tabInter[i][j].getColor() == null){
+					Territory.ResetList();
+					Territory.ResetEns();
+					for (int i1=0; i1<Taille; i1++) {
+						for (int j1=0; j1<Taille; j1++){
+							tabInter[i1][j1].setCaller(null);
+							tabInter[i1][j1].setCalled(null);
+						}
+					}
+					//Create a group of the same color piece, starting with the tabInter[i][j].
+					Territory.EnsembleNULL(tabInter[i][j]);
+					//If the group is surrounded according to the rules, then delete them.
+					if (Territory.GrandTer(Territory.Ensemble) == true){
+						ArrayList<Intersection> EnsTest = Territory.Ensemble;
+						if (Territory.CaptureColor == Color.BLACK){
+							scoreBlTer = scoreBlTer + 1;
+						}
+						if (Territory.CaptureColor == Color.WHITE){
+							scoreWhTer = scoreWhTer + 1;
+						}
+						if (Territory.CaptureColor == Color.RED){
+							scoreReTer = scoreReTer + 1;
+						}
+					}
+				}
+			}
+		}*/
+	}
+	
+	@Override
+	public void mouseClicked(MouseEvent e) {
+		// TODO Auto-generated method stub
+		SaveTable();
+		int xclic = e.getX()/28;
+		int yclic = e.getY()/28;
+		this.addColInTab(xclic, yclic);
+		Calcul();
+		
 		this.repaint();
 		
 		//Traitement du tour de l'IA.
 		
-		if (nbPlayer == 2 && nbIA == 1){
+		/*if (nbPlayer == 2 && nbIA == 1){
 			Intersection IAInter = MyIAWhite.IATurn(tabInter,Color.WHITE);
 			this.addColInTab(IAInter.getAbscisse(), IAInter.getOrdonnee());
 			this.repaint();
 		}
-		/*if (nbPlayer == 3 && nbIA == 1){
+		if (nbPlayer == 3 && nbIA == 1){
 			Intersection IAInter = MyIARed.IATurn(tabInter,Color.RED);
 			this.addColInTab(IAInter.getAbscisse(), IAInter.getOrdonnee());
 			this.repaint();
@@ -460,7 +502,7 @@ public class DrawGoban extends JPanel implements MouseListener{
 		
 		ActualPassNum = PassNumLim;
 		myGameScreen.cancelButton.setEnabled(true);
-		myGameScreen.ShowScore();
+		myGameScreen.ShowScore(scoreBlTer, scoreWhTer, scoreReTer);
 	}
 
 	@Override
