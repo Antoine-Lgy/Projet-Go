@@ -17,10 +17,9 @@ public class IA{
 		int eval[][] = new int[20][20];							//Tableau qui contient les valeurs de la fonction d'�valuation
 		for (int i=1; i<19; i++) {
 			for (int j=1; j<19; j++) {
-				if (board[i][j].getColor() == null){
+				if (board[i][j].getColor() == null) {
 					eval[i][j]= Evaluation(board[i][j], i, j, board, colo);
-				}
-				else {
+				}else {
 					eval[i][j]= -1000;
 				}
 			}
@@ -91,28 +90,28 @@ public class IA{
 		int ordstart = ord;
 		int length = 0;
 		if (board[inter.getAbscisse()-1][ord-1].getColor() == colo){
-			return TerritoryfromNW( absstart, ordstart, abs-1, ord-1, board, length+1, colo);
+			return TerritoryfromSE( absstart, ordstart, abs-1, ord-1, board, length+1, colo);
 		}
 		else if(board[inter.getAbscisse()+1][ord+1].getColor() == colo) {
-			return TerritoryfromSE( absstart, ordstart, abs+1, ord+1, board, length+1, colo);
+			return TerritoryfromNW( absstart, ordstart, abs+1, ord+1, board, length+1, colo);
 		}
 		else if(board[inter.getAbscisse()+1][ord-1].getColor() == colo) {
-			return TerritoryfromNE( absstart, ordstart, abs+1, ord-1, board, length+1, colo);
+			return TerritoryfromSW( absstart, ordstart, abs+1, ord-1, board, length+1, colo);
 		}
 		else if(board[inter.getAbscisse()-1][ord+1].getColor() == colo) {
-			return TerritoryfromSW( absstart, ordstart, abs-1, ord+1, board, length+1, colo);
+			return TerritoryfromNE( absstart, ordstart, abs-1, ord+1, board, length+1, colo);
 		}
 		else if(board[inter.getAbscisse()-1][ord].getColor() == colo) {
-			return TerritoryfromN( absstart, ordstart, abs-1, ord, board, length+1, colo);
+			return TerritoryfromE( absstart, ordstart, abs-1, ord, board, length+1, colo);
 		}
 		else if(board[inter.getAbscisse()+1][ord].getColor() == colo) {
-			return TerritoryfromS( absstart, ordstart, abs+1, ord, board, length+1, colo);
+			return TerritoryfromW( absstart, ordstart, abs+1, ord, board, length+1, colo);
 		}
 		else if(board[inter.getAbscisse()][ord-1].getColor() == colo) {
-			return TerritoryfromW( absstart, ordstart, abs, ord-1, board, length+1, colo);
+			return TerritoryfromS( absstart, ordstart, abs, ord-1, board, length+1, colo);
 		}
 		else if(board[inter.getAbscisse()][ord+1].getColor() == colo) {
-			return TerritoryfromE( absstart, ordstart, abs, ord+1, board, length+1, colo);
+			return TerritoryfromN( absstart, ordstart, abs, ord+1, board, length+1, colo);
 		}
 		else {
 			return 0;
@@ -128,25 +127,25 @@ public class IA{
 			}
 		}
 		else if (board[abs-1][ord-1].getColor() == colo){
-			return TerritoryfromNW( absstart, ordstart, abs-1, ord-1, board, length+1, colo);
+			return TerritoryfromSE( absstart, ordstart, abs-1, ord-1, board, length+1, colo);
 		}
 		else if(board[abs+1][ord+1].getColor() == colo) {
-			return TerritoryfromSE( absstart, ordstart, abs+1, ord+1, board, length+1, colo);
+			return TerritoryfromNW( absstart, ordstart, abs+1, ord+1, board, length+1, colo);
 		}
 		else if(board[abs+1][ord-1].getColor() == colo) {
-			return TerritoryfromNE( absstart, ordstart, abs+1, ord-1, board, length+1, colo);
+			return TerritoryfromSW( absstart, ordstart, abs+1, ord-1, board, length+1, colo);
 		}
 		else if(board[abs-1][ord+1].getColor() == colo) {
-			return TerritoryfromSW( absstart, ordstart, abs-1, ord+1, board, length+1, colo);
+			return TerritoryfromNE( absstart, ordstart, abs-1, ord+1, board, length+1, colo);
 		}
 		else if(board[abs-1][ord].getColor() == colo) {
-			return TerritoryfromN( absstart, ordstart, abs-1, ord, board, length+1, colo);
+			return TerritoryfromE( absstart, ordstart, abs-1, ord, board, length+1, colo);
 		}
-		else if(board[abs][ord-1].getColor() == colo) {
+		else if(board[abs+1][ord].getColor() == colo) {
 			return TerritoryfromW( absstart, ordstart, abs, ord-1, board, length+1, colo);
 		}
 		else if(board[abs][ord+1].getColor() == colo) {
-			return TerritoryfromE( absstart, ordstart, abs, ord+1, board, length+1, colo);
+			return TerritoryfromN( absstart, ordstart, abs, ord+1, board, length+1, colo);
 		}
 		else {
 			return 0;
@@ -162,25 +161,25 @@ public class IA{
 			}
 		}
 		else if (board[abs-1][ord-1].getColor() == colo){
-			return TerritoryfromNW( absstart, ordstart, abs-1, ord-1, board, length+1, colo);
+			return TerritoryfromSE( absstart, ordstart, abs-1, ord-1, board, length+1, colo);
 		}
 		else if(board[abs+1][ord+1].getColor() == colo) {
-			return TerritoryfromSE( absstart, ordstart, abs+1, ord+1, board, length+1, colo);
+			return TerritoryfromNW( absstart, ordstart, abs+1, ord+1, board, length+1, colo);
 		}
 		else if(board[abs+1][ord-1].getColor() == colo) {
 			return TerritoryfromNE( absstart, ordstart, abs+1, ord-1, board, length+1, colo);
 		}
 		else if(board[abs-1][ord].getColor() == colo) {
-			return TerritoryfromN( absstart, ordstart, abs-1, ord, board, length+1, colo);
+			return TerritoryfromE( absstart, ordstart, abs-1, ord, board, length+1, colo);
 		}
 		else if(board[abs+1][ord].getColor() == colo) {
-			return TerritoryfromS( absstart, ordstart, abs+1, ord, board, length+1, colo);
+			return TerritoryfromW( absstart, ordstart, abs+1, ord, board, length+1, colo);
 		}
 		else if(board[abs][ord-1].getColor() == colo) {
-			return TerritoryfromW( absstart, ordstart, abs, ord-1, board, length+1, colo);
+			return TerritoryfromS( absstart, ordstart, abs, ord-1, board, length+1, colo);
 		}
 		else if(board[abs][ord+1].getColor() == colo) {
-			return TerritoryfromE( absstart, ordstart, abs, ord+1, board, length+1, colo);
+			return TerritoryfromN( absstart, ordstart, abs, ord+1, board, length+1, colo);
 		}
 		else {
 			return 0;
@@ -196,25 +195,25 @@ public class IA{
 			}
 		}
 		else if (board[abs-1][ord-1].getColor() == colo){
-			return TerritoryfromNW( absstart, ordstart, abs-1, ord-1, board, length+1, colo);
+			return TerritoryfromSE( absstart, ordstart, abs-1, ord-1, board, length+1, colo);
 		}
 		else if(board[abs+1][ord+1].getColor() == colo) {
-			return TerritoryfromSE( absstart, ordstart, abs+1, ord+1, board, length+1, colo);
+			return TerritoryfromNW( absstart, ordstart, abs+1, ord+1, board, length+1, colo);
 		}
 		else if(board[abs+1][ord-1].getColor() == colo) {
-			return TerritoryfromNE( absstart, ordstart, abs+1, ord-1, board, length+1, colo);
+			return TerritoryfromSW( absstart, ordstart, abs+1, ord-1, board, length+1, colo);
 		}
 		else if(board[abs-1][ord+1].getColor() == colo) {
-			return TerritoryfromSW( absstart, ordstart, abs-1, ord+1, board, length+1, colo);
+			return TerritoryfromNE( absstart, ordstart, abs-1, ord+1, board, length+1, colo);
 		}
 		else if(board[abs-1][ord].getColor() == colo) {
-			return TerritoryfromN( absstart, ordstart, abs-1, ord, board, length+1, colo);
+			return TerritoryfromE( absstart, ordstart, abs-1, ord, board, length+1, colo);
 		}
-		else if(board[abs+1][ord].getColor() == colo) {
-			return TerritoryfromS( absstart, ordstart, abs+1, ord, board, length+1, colo);
+		else if(board[abs][ord-1].getColor() == colo) {
+			return TerritoryfromS( absstart, ordstart, abs, ord-1, board, length+1, colo);
 		}
 		else if(board[abs][ord+1].getColor() == colo) {
-			return TerritoryfromE( absstart, ordstart, abs, ord+1, board, length+1, colo);
+			return TerritoryfromN( absstart, ordstart, abs, ord+1, board, length+1, colo);
 		}
 		else {
 			return 0;
@@ -229,8 +228,8 @@ public class IA{
 				return 1;
 			}
 		}
-		else if(board[abs+1][ord+1].getColor() == colo) {
-			return TerritoryfromSE( absstart, ordstart, abs+1, ord+1, board, length+1, colo);
+		else if(board[abs-1][ord-1].getColor() == colo) {
+			return TerritoryfromSE( absstart, ordstart, abs-1, ord-1, board, length+1, colo);
 		}
 		else if(board[abs+1][ord-1].getColor() == colo) {
 			return TerritoryfromNE( absstart, ordstart, abs+1, ord-1, board, length+1, colo);
@@ -239,16 +238,16 @@ public class IA{
 			return TerritoryfromSW( absstart, ordstart, abs-1, ord+1, board, length+1, colo);
 		}
 		else if(board[abs-1][ord].getColor() == colo) {
-			return TerritoryfromN( absstart, ordstart, abs-1, ord, board, length+1, colo);
+			return TerritoryfromE( absstart, ordstart, abs-1, ord, board, length+1, colo);
 		}
 		else if(board[abs+1][ord].getColor() == colo) {
-			return TerritoryfromS( absstart, ordstart, abs+1, ord, board, length+1, colo);
+			return TerritoryfromW( absstart, ordstart, abs+1, ord, board, length+1, colo);
 		}
 		else if(board[abs][ord-1].getColor() == colo) {
-			return TerritoryfromW( absstart, ordstart, abs, ord-1, board, length+1, colo);
+			return TerritoryfromS( absstart, ordstart, abs, ord-1, board, length+1, colo);
 		}
 		else if(board[abs][ord+1].getColor() == colo) {
-			return TerritoryfromE( absstart, ordstart, abs, ord+1, board, length+1, colo);
+			return TerritoryfromN( absstart, ordstart, abs, ord+1, board, length+1, colo);
 		}
 		else {
 			return 0;
@@ -264,25 +263,25 @@ public class IA{
 			}
 		}
 		else if (board[abs-1][ord-1].getColor() == colo){
-			return TerritoryfromNW( absstart, ordstart, abs-1, ord-1, board, length+1, colo);
+			return TerritoryfromSE( absstart, ordstart, abs-1, ord-1, board, length+1, colo);
 		}
 		else if(board[abs+1][ord+1].getColor() == colo) {
-			return TerritoryfromSE( absstart, ordstart, abs+1, ord+1, board, length+1, colo);
+			return TerritoryfromNW( absstart, ordstart, abs+1, ord+1, board, length+1, colo);
 		}
 		else if(board[abs+1][ord-1].getColor() == colo) {
-			return TerritoryfromNE( absstart, ordstart, abs+1, ord-1, board, length+1, colo);
+			return TerritoryfromSW( absstart, ordstart, abs+1, ord-1, board, length+1, colo);
 		}
 		else if(board[abs-1][ord+1].getColor() == colo) {
-			return TerritoryfromSW( absstart, ordstart, abs-1, ord+1, board, length+1, colo);
+			return TerritoryfromNE( absstart, ordstart, abs-1, ord+1, board, length+1, colo);
 		}
 		else if(board[abs+1][ord].getColor() == colo) {
-			return TerritoryfromS( absstart, ordstart, abs+1, ord, board, length+1, colo);
+			return TerritoryfromW( absstart, ordstart, abs+1, ord, board, length+1, colo);
+		}
+		else if(board[abs-1][ord].getColor() == colo) {
+			return TerritoryfromE( absstart, ordstart, abs-1, ord, board, length+1, colo);
 		}
 		else if(board[abs][ord-1].getColor() == colo) {
-			return TerritoryfromW( absstart, ordstart, abs, ord-1, board, length+1, colo);
-		}
-		else if(board[abs][ord+1].getColor() == colo) {
-			return TerritoryfromE( absstart, ordstart, abs, ord+1, board, length+1, colo);
+			return TerritoryfromS( absstart, ordstart, abs, ord-1, board, length+1, colo);
 		}
 		else {
 			return 0;
@@ -298,25 +297,25 @@ public class IA{
 			}
 		}
 		else if (board[abs-1][ord-1].getColor() == colo){
-			return TerritoryfromNW( absstart, ordstart, abs-1, ord-1, board, length+1, colo);
+			return TerritoryfromSE( absstart, ordstart, abs-1, ord-1, board, length+1, colo);
 		}
 		else if(board[abs+1][ord+1].getColor() == colo) {
-			return TerritoryfromSE( absstart, ordstart, abs+1, ord+1, board, length+1, colo);
+			return TerritoryfromNW( absstart, ordstart, abs+1, ord+1, board, length+1, colo);
 		}
 		else if(board[abs-1][ord+1].getColor() == colo) {
-			return TerritoryfromSW( absstart, ordstart, abs-1, ord+1, board, length+1, colo);
+			return TerritoryfromNE( absstart, ordstart, abs-1, ord+1, board, length+1, colo);
 		}
 		else if(board[abs-1][ord].getColor() == colo) {
-			return TerritoryfromN( absstart, ordstart, abs-1, ord, board, length+1, colo);
+			return TerritoryfromE( absstart, ordstart, abs-1, ord, board, length+1, colo);
 		}
 		else if(board[abs+1][ord].getColor() == colo) {
-			return TerritoryfromS( absstart, ordstart, abs+1, ord, board, length+1, colo);
+			return TerritoryfromW( absstart, ordstart, abs+1, ord, board, length+1, colo);
 		}
 		else if(board[abs][ord-1].getColor() == colo) {
-			return TerritoryfromW( absstart, ordstart, abs, ord-1, board, length+1, colo);
+			return TerritoryfromS( absstart, ordstart, abs, ord-1, board, length+1, colo);
 		}
 		else if(board[abs][ord+1].getColor() == colo) {
-			return TerritoryfromE( absstart, ordstart, abs, ord+1, board, length+1, colo);
+			return TerritoryfromN( absstart, ordstart, abs, ord+1, board, length+1, colo);
 		}
 		else {
 			return 0;
@@ -332,25 +331,25 @@ public class IA{
 			}
 		}
 		else if (board[abs-1][ord-1].getColor() == colo){
-			return TerritoryfromNW( absstart, ordstart, abs-1, ord-1, board, length+1, colo);
+			return TerritoryfromSE( absstart, ordstart, abs-1, ord-1, board, length+1, colo);
 		}
 		else if(board[abs+1][ord+1].getColor() == colo) {
-			return TerritoryfromSE( absstart, ordstart, abs+1, ord+1, board, length+1, colo);
+			return TerritoryfromNW( absstart, ordstart, abs+1, ord+1, board, length+1, colo);
 		}
 		else if(board[abs+1][ord-1].getColor() == colo) {
-			return TerritoryfromNE( absstart, ordstart, abs+1, ord-1, board, length+1, colo);
+			return TerritoryfromSW( absstart, ordstart, abs+1, ord-1, board, length+1, colo);
 		}
 		else if(board[abs-1][ord+1].getColor() == colo) {
-			return TerritoryfromSW( absstart, ordstart, abs-1, ord+1, board, length+1, colo);
+			return TerritoryfromNE( absstart, ordstart, abs-1, ord+1, board, length+1, colo);
 		}
-		else if(board[abs-1][ord].getColor() == colo) {
-			return TerritoryfromN( absstart, ordstart, abs-1, ord, board, length+1, colo);
+		else if(board[abs][ord+1].getColor() == colo) {
+			return TerritoryfromN( absstart, ordstart, abs, ord+1, board, length+1, colo);
 		}
 		else if(board[abs+1][ord].getColor() == colo) {
-			return TerritoryfromS( absstart, ordstart, abs+1, ord, board, length+1, colo);
+			return TerritoryfromW( absstart, ordstart, abs+1, ord, board, length+1, colo);
 		}
 		else if(board[abs][ord-1].getColor() == colo) {
-			return TerritoryfromW( absstart, ordstart, abs, ord-1, board, length+1, colo);
+			return TerritoryfromS( absstart, ordstart, abs, ord-1, board, length+1, colo);
 		}
 		else {
 			return 0;
@@ -365,26 +364,26 @@ public class IA{
 				return 1;
 			}
 		}
-		else if (board[abs-1][ord-1].getColor() == colo){
-			return TerritoryfromNW( absstart, ordstart, abs-1, ord-1, board, length+1, colo);
+		else if (board[abs+1][ord+1].getColor() == colo){
+			return TerritoryfromNW( absstart, ordstart, abs+1, ord+1, board, length+1, colo);
 		}
 		else if(board[abs+1][ord-1].getColor() == colo) {
-			return TerritoryfromNE( absstart, ordstart, abs+1, ord-1, board, length+1, colo);
+			return TerritoryfromSW( absstart, ordstart, abs+1, ord-1, board, length+1, colo);
 		}
 		else if(board[abs-1][ord+1].getColor() == colo) {
-			return TerritoryfromSW( absstart, ordstart, abs-1, ord+1, board, length+1, colo);
+			return TerritoryfromNE( absstart, ordstart, abs-1, ord+1, board, length+1, colo);
 		}
 		else if(board[abs-1][ord].getColor() == colo) {
-			return TerritoryfromN( absstart, ordstart, abs-1, ord, board, length+1, colo);
+			return TerritoryfromE( absstart, ordstart, abs-1, ord, board, length+1, colo);
 		}
 		else if(board[abs+1][ord].getColor() == colo) {
-			return TerritoryfromS( absstart, ordstart, abs+1, ord, board, length+1, colo);
+			return TerritoryfromW( absstart, ordstart, abs+1, ord, board, length+1, colo);
 		}
 		else if(board[abs][ord-1].getColor() == colo) {
-			return TerritoryfromW( absstart, ordstart, abs, ord-1, board, length+1, colo);
+			return TerritoryfromS( absstart, ordstart, abs, ord-1, board, length+1, colo);
 		}
 		else if(board[abs][ord+1].getColor() == colo) {
-			return TerritoryfromE( absstart, ordstart, abs, ord+1, board, length+1, colo);
+			return TerritoryfromN( absstart, ordstart, abs, ord+1, board, length+1, colo);
 		}
 		else {
 			return 0;

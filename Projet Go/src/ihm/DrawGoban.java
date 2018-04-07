@@ -440,12 +440,12 @@ public class DrawGoban extends JPanel implements MouseListener{
 		
 		//Traitement du tour de l'IA.
 		
-		/*if (nbPlayer == 2 && nbIA == 1){
+		if (nbPlayer == 2 && nbIA == 1){
 			Intersection IAInter = MyIAWhite.IATurn(tabInter,Color.WHITE);
 			this.addColInTab(IAInter.getAbscisse(), IAInter.getOrdonnee());
 			this.repaint();
 		}
-		if (nbPlayer == 3 && nbIA == 1){
+		/*if (nbPlayer == 3 && nbIA == 1){
 			Intersection IAInter = MyIARed.IATurn(tabInter,Color.RED);
 			this.addColInTab(IAInter.getAbscisse(), IAInter.getOrdonnee());
 			this.repaint();
