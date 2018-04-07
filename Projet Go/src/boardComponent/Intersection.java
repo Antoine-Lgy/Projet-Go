@@ -21,8 +21,12 @@ public class Intersection {
 	protected Intersection prevIntersection = null;
 	protected Intersection LN = null;
 	protected Intersection LS = null;
-	protected Intersection LD = null;
-	protected Intersection LG = null;
+	protected Intersection LE = null;
+	protected Intersection LO = null;
+	protected Intersection LNE = null;
+	protected Intersection LSE = null;
+	protected Intersection LNO = null;
+	protected Intersection LSO = null;
 	protected Intersection Caller = null;
 	protected Intersection Called = null;
 	
@@ -66,11 +70,11 @@ public class Intersection {
 	public void setLS(Intersection lS) {
 		LS = lS;
 	}
-	public void setLD(Intersection lD) {
-		LD = lD;
+	public void setLD(Intersection lE) {
+		LE = lE;
 	}
-	public void setLG(Intersection lG) {
-		LG = lG;
+	public void setLG(Intersection lO) {
+		LO = lO;
 	}
 	public Intersection getLN() {
 		return LN;
@@ -78,11 +82,11 @@ public class Intersection {
 	public Intersection getLS() {
 		return LS;
 	}
-	public Intersection getLD() {
-		return LD;
+	public Intersection getLE() {
+		return LE;
 	}
-	public Intersection getLG() {
-		return LG;
+	public Intersection getLO() {
+		return LO;
 	}
 	public void setCaller(Intersection caller) {
 		Caller = caller;
@@ -95,6 +99,30 @@ public class Intersection {
 	}
 	public Intersection getCalled() {
 		return Called;
+	}
+	public void setLNE(Intersection lNE) {
+		LNE = lNE;
+	}
+	public void setLNO(Intersection lNO) {
+		LNO = lNO;
+	}
+	public void setLSE(Intersection lSE) {
+		LSE = lSE;
+	}
+	public void setLSO(Intersection lSO) {
+		LSO = lSO;
+	}
+	public Intersection getLNO() {
+		return LNO;
+	}
+	public Intersection getLNE() {
+		return LNE;
+	}
+	public Intersection getLSE() {
+		return LSE;
+	}
+	public Intersection getLSO() {
+		return LSO;
 	}
 	
 	public Intersection Myclone(){

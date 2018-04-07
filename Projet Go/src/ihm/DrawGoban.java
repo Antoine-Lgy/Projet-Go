@@ -1,30 +1,21 @@
 package ihm;
 
 import java.awt.Color;
-import java.awt.Component;
 import java.awt.Graphics;
-import java.awt.GridLayout;
 import java.awt.Image;
-import java.awt.Point;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Scanner;
-
 import javax.imageio.ImageIO;
-import javax.swing.JButton;
-import javax.swing.JComponent;
-import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 import boardComponent.Intersection;
 import boardComponent.Territory;
 import moteur.ArcherPiece;
+import moteur.IA;
 import moteur.MagePiece;
 import moteur.MonkPiece;
 import moteur.NormalPiece;
@@ -46,7 +37,10 @@ public class DrawGoban extends JPanel implements MouseListener{
 	public gameScreen myGameScreen;
 	public Image img;
 	int nbIA = 0;
+	int nbPlayer = 0;
 	Intersection[][] PrevTabInter = new Intersection[20][20];
+	IA MyIAWhite = new IA();
+	IA MyIARed = new IA();
 	
     public DrawGoban(int nbPlayer,int nbIA){
     	try {
@@ -56,6 +50,7 @@ public class DrawGoban extends JPanel implements MouseListener{
 			e.printStackTrace();
 		}
     	this.nbIA = nbIA;
+    	this.nbPlayer = nbPlayer;
     	if (nbPlayer == 2){
     		Player = 10;
     		PassNumLim = 2;
@@ -64,7 +59,7 @@ public class DrawGoban extends JPanel implements MouseListener{
     	//Create an object Intersection on each intersection.
     	for(int lig=0;lig<20;lig++){
     		for(int col=0;col<20;col++){
-    			tabInter[lig][col] = new Intersection(13+col*28,13+lig*28,null);
+    			tabInter[lig][col] = new Intersection(col,lig,null);
     		}
     	}
     	//Set each piece's liberty.
@@ -75,54 +70,90 @@ public class DrawGoban extends JPanel implements MouseListener{
 					tabInter[i][j].setLS(tabInter[i+1][j]);
 					tabInter[i][j].setLD(tabInter[i][j+1]);
 					tabInter[i][j].setLG(tabInter[i][j-1]);
+					tabInter[i][j].setLNE(tabInter[i-1][j+1]);
+					tabInter[i][j].setLNO(tabInter[i-1][j-1]);
+					tabInter[i][j].setLSE(tabInter[i+1][j+1]);
+					tabInter[i][j].setLSO(tabInter[i+1][j-1]);
 				}
 				if (i==0 && j==0){
 					tabInter[i][j].setLN(new Intersection());
 					tabInter[i][j].setLS(tabInter[i+1][j]);
 					tabInter[i][j].setLD(tabInter[i][j+1]);
 					tabInter[i][j].setLG(new Intersection());
+					tabInter[i][j].setLNE(new Intersection());
+					tabInter[i][j].setLNO(new Intersection());
+					tabInter[i][j].setLSE(tabInter[i+1][j+1]);
+					tabInter[i][j].setLSO(new Intersection());
 				}
 				if (i==0 && j==19){
 					tabInter[i][j].setLN(new Intersection());
 					tabInter[i][j].setLS(tabInter[i+1][j]);
 					tabInter[i][j].setLD(new Intersection());
 					tabInter[i][j].setLG(tabInter[i][j-1]);
+					tabInter[i][j].setLNE(new Intersection());
+					tabInter[i][j].setLNO(new Intersection());
+					tabInter[i][j].setLSE(new Intersection());
+					tabInter[i][j].setLSO(tabInter[i+1][j-1]);
 				}
 				if (i==19 && j==0){
 					tabInter[i][j].setLN(tabInter[i-1][j]);
 					tabInter[i][j].setLS(new Intersection());
 					tabInter[i][j].setLD(tabInter[i][j+1]);
 					tabInter[i][j].setLG(new Intersection());
+					tabInter[i][j].setLNE(tabInter[i-1][j+1]);
+					tabInter[i][j].setLNO(new Intersection());
+					tabInter[i][j].setLSE(new Intersection());
+					tabInter[i][j].setLSO(new Intersection());
 				}
 				if (i==19 && j==19){
 					tabInter[i][j].setLN(tabInter[i-1][j]);
 					tabInter[i][j].setLS(new Intersection());
 					tabInter[i][j].setLD(new Intersection());
 					tabInter[i][j].setLG(tabInter[i][j-1]);
+					tabInter[i][j].setLNE(new Intersection());
+					tabInter[i][j].setLNO(tabInter[i-1][j-1]);
+					tabInter[i][j].setLSE(new Intersection());
+					tabInter[i][j].setLSO(new Intersection());
 				}
 				if (i==0 && j!=0 && j!=19){
 					tabInter[i][j].setLN(new Intersection());
 					tabInter[i][j].setLS(tabInter[i+1][j]);
 					tabInter[i][j].setLD(tabInter[i][j+1]);
 					tabInter[i][j].setLG(tabInter[i][j-1]);
+					tabInter[i][j].setLNE(new Intersection());
+					tabInter[i][j].setLNO(new Intersection());
+					tabInter[i][j].setLSE(tabInter[i+1][j+1]);
+					tabInter[i][j].setLSO(tabInter[i+1][j-1]);
 				}
 				if (i==19 && j!=19 && j!=0){
 					tabInter[i][j].setLN(tabInter[i-1][j]);
 					tabInter[i][j].setLS(new Intersection());
 					tabInter[i][j].setLD(tabInter[i][j+1]);
 					tabInter[i][j].setLG(tabInter[i][j-1]);
+					tabInter[i][j].setLNE(tabInter[i-1][j+1]);
+					tabInter[i][j].setLNO(tabInter[i-1][j-1]);
+					tabInter[i][j].setLSE(new Intersection());
+					tabInter[i][j].setLSO(new Intersection());
 				}
 				if (j==0 && i!=0 && i!=19){
 					tabInter[i][j].setLN(tabInter[i-1][j]);
 					tabInter[i][j].setLS(tabInter[i+1][j]);
 					tabInter[i][j].setLD(tabInter[i][j+1]);
 					tabInter[i][j].setLG(new Intersection());
+					tabInter[i][j].setLNE(tabInter[i-1][j+1]);
+					tabInter[i][j].setLNO(new Intersection());
+					tabInter[i][j].setLSE(tabInter[i+1][j+1]);
+					tabInter[i][j].setLSO(new Intersection());
 				}
 				if (j==19 && i!= 19 && i!=0){
 					tabInter[i][j].setLN(tabInter[i-1][j]);
 					tabInter[i][j].setLS(tabInter[i+1][j]);
 					tabInter[i][j].setLD(new Intersection());
 					tabInter[i][j].setLG(tabInter[i][j-1]);
+					tabInter[i][j].setLNE(new Intersection());
+					tabInter[i][j].setLNO(tabInter[i-1][j-1]);
+					tabInter[i][j].setLSE(new Intersection());
+					tabInter[i][j].setLSO(tabInter[i+1][j-1]);
 				}
 			}
     	}
@@ -143,15 +174,15 @@ public class DrawGoban extends JPanel implements MouseListener{
 					
 				}
 				else {
-					int x = tabInter[i][j].getAbscisse();
-					int y = tabInter[i][j].getOrdonnee();
+					int x = 13 + tabInter[i][j].getAbscisse() * 28;
+					int y = 13 + tabInter[i][j].getOrdonnee() * 28;
 					
 					g.setColor(tabInter[i][j].getColor());
 					g.fillOval(x-12, y-12, 24, 24);
 				}
 			}
 		}
-		this.repaint();
+		//this.repaint();
 	}
 	
 	//Put Color in tabInter according to the player turn, and deal with piece's special action.
@@ -406,6 +437,26 @@ public class DrawGoban extends JPanel implements MouseListener{
 			}
 		}
 		this.repaint();
+		
+		//Traitement du tour de l'IA.
+		
+		/*if (nbPlayer == 2 && nbIA == 1){
+			Intersection IAInter = MyIAWhite.IATurn(tabInter,Color.WHITE);
+			this.addColInTab(IAInter.getAbscisse(), IAInter.getOrdonnee());
+			this.repaint();
+		}
+		if (nbPlayer == 3 && nbIA == 1){
+			Intersection IAInter = MyIARed.IATurn(tabInter,Color.RED);
+			this.addColInTab(IAInter.getAbscisse(), IAInter.getOrdonnee());
+			this.repaint();
+		}
+		if (nbPlayer == 3 && nbIA == 2){
+			Intersection IAInter = MyIAWhite.IATurn(tabInter,Color.WHITE);
+			this.addColInTab(IAInter.getAbscisse(), IAInter.getOrdonnee());
+			Intersection IAInter2 = MyIARed.IATurn(tabInter,Color.RED);
+			this.addColInTab(IAInter2.getAbscisse(), IAInter2.getOrdonnee());
+			this.repaint();
+		*/
 		
 		ActualPassNum = PassNumLim;
 		myGameScreen.cancelButton.setEnabled(true);

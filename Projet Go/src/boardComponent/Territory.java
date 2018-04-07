@@ -162,26 +162,26 @@ public class Territory {
 			LSCol = inter.getLS().getColor();
 			ListeColAutour.add(LSCol);
 		}
-		if (inter.getLD().getColor() == CurCol){
-			if (inter.getCaller() != inter.getLD() && inter.getCalled() != inter.getLD()){
-				inter.getLD().setCaller(inter);
-				inter.setCalled(inter.getLD());
-				testAutour(inter.getLD());
+		if (inter.getLE().getColor() == CurCol){
+			if (inter.getCaller() != inter.getLE() && inter.getCalled() != inter.getLE()){
+				inter.getLE().setCaller(inter);
+				inter.setCalled(inter.getLE());
+				testAutour(inter.getLE());
 			}
 		}
 		else {
-			LDCol = inter.getLD().getColor();
+			LDCol = inter.getLE().getColor();
 			ListeColAutour.add(LDCol);
 		}
-		if (inter.getLG().getColor() == CurCol){
-			if (inter.getCaller() != inter.getLG() && inter.getCalled() != inter.getLG()){
-				inter.getLG().setCaller(inter);
-				inter.setCalled(inter.getLG());
-				testAutour(inter.getLG());
+		if (inter.getLO().getColor() == CurCol){
+			if (inter.getCaller() != inter.getLO() && inter.getCalled() != inter.getLO()){
+				inter.getLO().setCaller(inter);
+				inter.setCalled(inter.getLO());
+				testAutour(inter.getLO());
 			}
 		}
 		else {
-			LGCol = inter.getLG().getColor();
+			LGCol = inter.getLO().getColor();
 			ListeColAutour.add(LGCol);
 		}
 	}
@@ -203,16 +203,16 @@ public class Territory {
 					EnsembleMC(CurInter.getLS());
 				}
 			}
-			if (CurInter.getLD().getColor() == LaColor){
-				if (!Ensemble.contains(CurInter.getLD())){
-					Ensemble.add(CurInter.getLD());
-					EnsembleMC(CurInter.getLD());
+			if (CurInter.getLE().getColor() == LaColor){
+				if (!Ensemble.contains(CurInter.getLE())){
+					Ensemble.add(CurInter.getLE());
+					EnsembleMC(CurInter.getLE());
 				}
 			}
-			if (CurInter.getLG().getColor() == LaColor){
-				if (!Ensemble.contains(CurInter.getLG())){
-					Ensemble.add(CurInter.getLG());
-					EnsembleMC(CurInter.getLG());
+			if (CurInter.getLO().getColor() == LaColor){
+				if (!Ensemble.contains(CurInter.getLO())){
+					Ensemble.add(CurInter.getLO());
+					EnsembleMC(CurInter.getLO());
 				}
 			}
 		}
