@@ -96,4 +96,10 @@ public class Intersection {
 	public Intersection getCalled() {
 		return Called;
 	}
+	
+	public Intersection Myclone(){
+		Intersection interCopy = new Intersection();
+		interCopy.bgColor = this.bgColor;
+		return interCopy;
+	}
 }

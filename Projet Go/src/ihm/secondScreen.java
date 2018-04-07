@@ -89,12 +89,24 @@ public class secondScreen extends JFrame{
 	
 	class start2Button implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
-			if (getCompo().equals("J vs J") || getCompo().equals("J vs IA")){
-				new gameScreen(2);
+			if (getCompo().equals("J vs J")){
+				new gameScreen(2,0);
 				dispose();
 			}
-			else {
-				new gameScreen(3);
+			else if (getCompo().equals("J vs IA")){
+				new gameScreen(2,1);
+				dispose();
+			}
+			else if(getCompo().equals("J vs J vs J")){
+				new gameScreen(3,0);
+				dispose();
+			}
+			else if(getCompo().equals("J vs J vs IA")){
+				new gameScreen(3,1);
+				dispose();
+			}
+			else if(getCompo().equals("J vs IA vs IA")){
+				new gameScreen(3,2);
 				dispose();
 			}
 		}

@@ -45,14 +45,17 @@ public class DrawGoban extends JPanel implements MouseListener{
 	private String type = "normal";
 	public gameScreen myGameScreen;
 	public Image img;
+	int nbIA = 0;
+	Intersection[][] PrevTabInter = new Intersection[20][20];
 	
-    public DrawGoban(int nbPlayer){
+    public DrawGoban(int nbPlayer,int nbIA){
     	try {
 			img = ImageIO.read(new File(Imagerie.getImgGoban()));
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+    	this.nbIA = nbIA;
     	if (nbPlayer == 2){
     		Player = 10;
     		PassNumLim = 2;
@@ -142,23 +145,6 @@ public class DrawGoban extends JPanel implements MouseListener{
 				else {
 					int x = tabInter[i][j].getAbscisse();
 					int y = tabInter[i][j].getOrdonnee();
-					Territory.ResetList();
-					Territory.ResetEns();
-					for (int i1=0; i1<20; i1++) {
-						for (int j1=0; j1<20; j1++){
-							tabInter[i1][j1].setCaller(null);
-							tabInter[i1][j1].setCalled(null);
-						}
-					}
-					//Create a group of the same color piece, starting with the tabInter[i][j].
-					Territory.EnsembleMC(tabInter[i][j]);
-					//If the group is surrounded according to the rules, then delete them.
-					if (Territory.GrandTer(Territory.Ensemble) == true){
-						ArrayList<Intersection> EnsTest = Territory.Ensemble;
-						for(int a = 0; a < EnsTest.size(); a++){
-							EnsTest.get(a).setColor(null);
-						}
-					}
 					
 					g.setColor(tabInter[i][j].getColor());
 					g.fillOval(x-12, y-12, 24, 24);
@@ -300,26 +286,28 @@ public class DrawGoban extends JPanel implements MouseListener{
 	
 	//Undo the last turn.
 	public void Undo() {
-		if (lastIntersection != null) {
-			lastIntersection.setColor(null);
-			lastIntersection = lastIntersection.getPrevIntersection();
-			repaint();
-			if(Player==0){
-				Player=2;
-			}
-			else if (Player==1) {
-				Player=0;
-			}
-			else if (Player==2) {
-				Player=1;
-			}
-			else if(Player==10){
-				Player=11;
-			}
-			else if(Player==11){
-				Player=10;
+		for (int i=0; i<20; i++) {
+			for (int j=0; j<20; j++){
+				tabInter[i][j].setColor(PrevTabInter[i][j].getColor());
 			}
 		}
+		repaint();
+		if(Player==0){
+			Player=2;
+		}
+		else if (Player==1) {
+			Player=0;
+		}
+		else if (Player==2) {
+			Player=1;
+		}
+		else if(Player==10){
+			Player=11;
+		}
+		else if(Player==11){
+			Player=10;
+		}
+		myGameScreen.ShowScore();
 	}
 	
 	//Pass the current player turn.
@@ -352,21 +340,21 @@ public class DrawGoban extends JPanel implements MouseListener{
 			int Rs = Score.RScoreCount(tabInter);
 			if (PassNumLim == 3){
 				if (Bs > Ws && Bs > Rs) {
-					jop.showMessageDialog(null, "Fin de la partie, Le jouer Noir à gagné !" + " Noir : "+ Bs + "  Blanc : "+ Ws + "  Rouge : "+ Rs, null, JOptionPane.INFORMATION_MESSAGE);
+					jop.showMessageDialog(null, "Fin de la partie, Le jouer Noir a gagné !" + " Noir : "+ Bs + "  Blanc : "+ Ws + "  Rouge : "+ Rs, null, JOptionPane.INFORMATION_MESSAGE);
 				}
 				if (Ws > Bs && Ws > Rs) {
-					jop.showMessageDialog(null, "Fin de la partie, Le jouer Blanc à gagné !" + " Noir : "+ Bs + "  Blanc : "+ Ws + "  Rouge : "+ Rs, null, JOptionPane.INFORMATION_MESSAGE);
+					jop.showMessageDialog(null, "Fin de la partie, Le jouer Blanc a gagné !" + " Noir : "+ Bs + "  Blanc : "+ Ws + "  Rouge : "+ Rs, null, JOptionPane.INFORMATION_MESSAGE);
 				}
 				if (Rs > Ws && Rs > Bs) {
-					jop.showMessageDialog(null, "Fin de la partie, Le jouer Rouge à gagné !" + " Noir : "+ Bs + "  Blanc : "+ Ws + "  Rouge : "+ Rs, null, JOptionPane.INFORMATION_MESSAGE);
+					jop.showMessageDialog(null, "Fin de la partie, Le jouer Rouge a gagné !" + " Noir : "+ Bs + "  Blanc : "+ Ws + "  Rouge : "+ Rs, null, JOptionPane.INFORMATION_MESSAGE);
 				}
 			}
 			else {
 				if (Bs > Ws && Bs > Rs) {
-					jop.showMessageDialog(null, "Fin de la partie, Le jouer Noir à gagné !" + " Noir : "+ Bs + "  Blanc : "+ Ws, null, JOptionPane.INFORMATION_MESSAGE);
+					jop.showMessageDialog(null, "Fin de la partie, Le jouer Noir a gagné !" + " Noir : "+ Bs + "  Blanc : "+ Ws, null, JOptionPane.INFORMATION_MESSAGE);
 				}
 				if (Ws > Bs && Ws > Rs) {
-					jop.showMessageDialog(null, "Fin de la partie, Le jouer Blanc à gagné !" + " Noir : "+ Bs + "  Blanc : "+ Ws, null, JOptionPane.INFORMATION_MESSAGE);
+					jop.showMessageDialog(null, "Fin de la partie, Le jouer Blanc a gagné !" + " Noir : "+ Bs + "  Blanc : "+ Ws, null, JOptionPane.INFORMATION_MESSAGE);
 				}
 			}
 		}
@@ -376,15 +364,52 @@ public class DrawGoban extends JPanel implements MouseListener{
 		myGameScreen = myGS;
 	}
 	
+	public void SaveTable(){
+		for (int i=0; i<20; i++) {
+			for (int j=0; j<20; j++){
+				PrevTabInter[i][j] = tabInter[i][j].Myclone();
+			}
+		}
+	}
 	
 	@Override
 	public void mouseClicked(MouseEvent e) {
 		// TODO Auto-generated method stub
+		SaveTable();
 		int xclic = e.getX()/28;
 		int yclic = e.getY()/28;
 		this.addColInTab(xclic, yclic);
+		for (int i=0; i<20; i++) {
+			for (int j=0; j<20; j++){
+				if (tabInter[i][j].getColor() == null){
+					
+				}
+				else {
+					Territory.ResetList();
+					Territory.ResetEns();
+					for (int i1=0; i1<20; i1++) {
+						for (int j1=0; j1<20; j1++){
+							tabInter[i1][j1].setCaller(null);
+							tabInter[i1][j1].setCalled(null);
+						}
+					}
+					//Create a group of the same color piece, starting with the tabInter[i][j].
+					Territory.EnsembleMC(tabInter[i][j]);
+					//If the group is surrounded according to the rules, then delete them.
+					if (Territory.GrandTer(Territory.Ensemble) == true){
+						ArrayList<Intersection> EnsTest = Territory.Ensemble;
+						for(int a = 0; a < EnsTest.size(); a++){
+							EnsTest.get(a).setColor(null);
+						}
+					}
+				}
+			}
+		}
 		this.repaint();
+		
 		ActualPassNum = PassNumLim;
+		myGameScreen.cancelButton.setEnabled(true);
+		myGameScreen.ShowScore();
 	}
 
 	@Override

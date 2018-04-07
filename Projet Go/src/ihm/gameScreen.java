@@ -54,13 +54,14 @@ public class gameScreen  extends JFrame{
 	JButton spe4black;
 	JButton spe4white;
 	JButton spe4red;
+	JButton cancelButton;
 	
-	public gameScreen(int nbPlayer){
+	public gameScreen(int nbPlayer, int nbIA){
 		
 		this.setTitle("Goban");
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.pack();
-		this.setSize(980, 600);
+		this.setSize(950, 600);
 		this.setLocationRelativeTo(null);
 		this.setResizable(false);
 		this.setVisible(true);
@@ -81,7 +82,8 @@ public class gameScreen  extends JFrame{
 		this.setJMenuBar(menuBar);
 		
 		//Center.
-		myGoban = new DrawGoban(nbPlayer);
+		myGoban = new DrawGoban(nbPlayer,nbIA);
+		myGoban.setGameScreen(this);
 		this.add(myGoban, BorderLayout.CENTER);
 		
 		///Line_END.
@@ -163,20 +165,17 @@ public class gameScreen  extends JFrame{
 		spe4Panel.add(spe4white);
 		spe4Panel.add(spe4red);
 		
-		JButton cancelButton = new JButton("Cancel");
+		cancelButton = new JButton("Cancel");
 		cancelButton.addActionListener(new ActionCancel());
 		JButton passButton = new JButton("Pass");
 		passButton.addActionListener(new ActionPass());
-		JButton ActuScore = new JButton("Actualize Score");
-		ActuScore.addActionListener(new ActionActu());
-		//JCheckBox noobMode = new JCheckBox("Beginner mode");
+		JCheckBox noobMode = new JCheckBox("Beginner mode");
 		JPanel buttonPanel = new JPanel();
 		buttonPanel.setBorder(BorderFactory.createLineBorder(Color.black,1));
 		buttonPanel.setLayout(new GridLayout());
 		buttonPanel.add(cancelButton);
 		buttonPanel.add(passButton);
-		//buttonPanel.add(noobMode);
-		buttonPanel.add(ActuScore);
+		buttonPanel.add(noobMode);
 		
 		JPanel b2 = new JPanel();
 		b2.setLayout(new BoxLayout(b2, BoxLayout.PAGE_AXIS));
@@ -195,18 +194,13 @@ public class gameScreen  extends JFrame{
 	class ActionCancel implements ActionListener{
 		public void actionPerformed(ActionEvent e) {
 			myGoban.Undo();
+			cancelButton.setEnabled(false);
 		}
 	}
 	
 	class ActionPass implements ActionListener{
 		public void actionPerformed(ActionEvent e) {
 			myGoban.Pass();
-		}
-	}
-	
-	class ActionActu implements ActionListener{
-		public void actionPerformed(ActionEvent e) {
-			ShowScore();
 		}
 	}
 	
