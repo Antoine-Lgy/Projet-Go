@@ -381,8 +381,8 @@ public class DrawGoban extends JPanel implements MouseListener{
 			}
 			else{
 				Bs = Score.BScoreCount(tabInter);
-				Ws = Score.WScoreCount(tabInter) + 0.25;
-				Rs = Score.RScoreCount(tabInter) + 0.5;
+				Ws = Score.WScoreCount(tabInter) + 5.25;
+				Rs = Score.RScoreCount(tabInter) + 10.5;
 			}
 			if (PassNumLim == 3){
 				if (Bs > Ws && Bs > Rs) {

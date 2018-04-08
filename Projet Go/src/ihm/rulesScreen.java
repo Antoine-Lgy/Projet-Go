@@ -34,11 +34,11 @@ public class rulesScreen extends JFrame implements ItemListener{
 	
 	JPanel cards;
 	
-	private JTextArea textPane= new JTextArea("Le joueur noir doit commencer à jouer d’après les règles du jeu de base.  Ceci constitue un avantage donc des points bonus sont attribués au joueur blanc. Ces points bonus représentent le « komi »  " +
+	private JTextArea textPane= new JTextArea("Le joueur noir doit commencer à jouer d’après les règles du jeu de base.  Ceci constitue un avantage donc des points bonus sont attribués au joueur blanc. Ces points bonus représentent le « komi »" +
 			
 			System.getProperty("line.separator") +
 			
-			"On ne peut pas poser une pierre sur une intersection déjà occupée. De même on ne peut pas poser une pierre sur une intersection vide si elle n’a pu de libertés dans le cas où l’on ne peut rien capturer.\n" + 
+			"On ne peut pas poser une pierre sur une intersection déjà occupée. De même on ne peut pas poser une pierre sur une intersection vide si elle n’a plus de liberté dans le cas où l’on ne peut rien capturer.\n" + 
 	
 			System.getProperty("line.separator") +
 			
@@ -46,12 +46,12 @@ public class rulesScreen extends JFrame implements ItemListener{
 			 
 			System.getProperty("line.separator") +
 			
-			"Un joueur peut passer son tour, principalement pour indiquer qu’il a finis sa partie. Lorsque tous les joueurs passent  consécutivement la partie s’arrête et le comptage des points, comprenant les intersections vides constituants les territoires, "
-			+ "les prisonniers de chaque joueur et le komi des joueurs le possédant, s’effectue pour désigner le vainqueur.Un joueur ne doit pas redonner au goban un état identique à l’un de ceux qu’il a eu précédemment.\n");
+			"Un joueur peut passer son tour, principalement pour indiquer qu’il a fini sa partie. Lorsque tous les joueurs passent consécutivement, la partie s’arrête et le comptage des points, comprenant les intersections vides constituants les territoires, "
+			+ "les prisonniers de chaque joueur et le komi des joueurs le possédant, s’effectue pour désigner le vainqueur.\n");
 	
 	private JScrollPane scroll=new JScrollPane(textPane);
 	
-	private JTextArea textPane2= new JTextArea("Pour les parties à 3 joueurs nous avons fixés arbitrairement des komis de 5,25 et 10,5 pour une partie à trois joueurs.\n"+
+	private JTextArea textPane2= new JTextArea("Pour les parties à 3 joueurs nous avons fixé arbitrairement des komis de 5,25 et 10,5.\n"+
 			
 			System.getProperty("line.separator") +
 		
@@ -59,19 +59,19 @@ public class rulesScreen extends JFrame implements ItemListener{
 			
 			System.getProperty("line.separator") +
 			
-			"•	Le méga-pion « moine » qui permet de convertir les pierres de couleurs différentes voisines de l’endroit où ladite pierre sera posée.\n" +
+			"• Le méga-pion « moine » qui permet de convertir les pierres de couleurs différentes voisines de l’endroit où ladite pierre sera posée.\n" +
 			
 			System.getProperty("line.separator") +
 			
-			"•	Le méga-pion « tank » qui permet de remplir les espaces vides dans un rayon de 1 intersection à l’endroit où nous poserons cette pierre.\n" +
+			"• Le méga-pion « tank » qui permet de remplir les espaces vides dans un rayon de 1 intersection à l’endroit où nous poserons cette pierre.\n" +
 			
 			System.getProperty("line.separator") +
 			
-			"•	Le méga-pion « mage » qui supprime les pions, de notre couleur ou non, sur les diagonales dans un rayon de 2 intersections autour de la future position de la pierre. Il est donc important de faire attention avant de l’utiliser.\n" +
+			"• Le méga-pion « mage » qui supprime les pions, de notre couleur ou non, sur les diagonales dans un rayon de 2 intersections autour de la future position de la pierre. Il est donc important de faire attention avant de l’utiliser.\n" +
 			
 			System.getProperty("line.separator") +
 			
-			"•	Le méga-pion « archer » qui supprime les pions sur 5 intersections  dans la direction rectiligne de notre choix après l’avoir posée. De même ce pion supprimant tous les pions peu importe leur couleur, il est nécessaire de l’utiliser avec soin..\n");
+			"• Le méga-pion « archer » qui supprime les pions sur 5 intersections dans la direction rectiligne de notre choix après l’avoir posé. De même ce pion supprimant tous les pions peu importe leur couleur, il est nécessaire de l’utiliser avec soin.\n");
 	
 	private JScrollPane scroll2=new JScrollPane(textPane2);
 	
@@ -104,8 +104,8 @@ public class rulesScreen extends JFrame implements ItemListener{
         textPane.setLineWrap(true);
         textPane.setWrapStyleWord(true);
         textPane.setEditable(false);
-        textPane.setRows(20);
-        textPane.setColumns(30);
+        textPane.setRows(24);
+        textPane.setColumns(35);
         
         scroll.setWheelScrollingEnabled(true);
         scroll.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
@@ -119,8 +119,8 @@ public class rulesScreen extends JFrame implements ItemListener{
         textPane2.setLineWrap(true);
         textPane2.setWrapStyleWord(true);
         textPane2.setEditable(false);
-        textPane2.setRows(20);
-        textPane2.setColumns(30);
+        textPane2.setRows(24);
+        textPane2.setColumns(35);
         scroll2.setWheelScrollingEnabled(true);
         scroll2.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
         
