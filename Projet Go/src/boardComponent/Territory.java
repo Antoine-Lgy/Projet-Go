@@ -4,7 +4,6 @@
 package boardComponent;
 import java.awt.Color;
 import java.util.ArrayList;
-import java.util.Iterator;
 
 /**
  * @author Antoine
@@ -25,8 +24,7 @@ public class Territory {
 	
 	//Prevent posing a piece in an eye.
 	public static boolean eye(Intersection[][] board, int x, int y){
-		Intersection currentInter = board[x][y];
-		if(x>0 && x<19 && y>0 && y<19){
+		if(x>0 && x<(board.length-1) && y>0 && y<(board.length-1)){
 			if (board[x+1][y].getColor() != null && board[x-1][y].getColor() != null && board[x][y+1].getColor() != null && board[x][y-1].getColor() != null){
 				Color couleurTest = board[x+1][y].getColor();
 				if (board[x-1][y].getColor().equals(couleurTest) && board[x][y+1].getColor().equals(couleurTest) && board[x][y-1].getColor().equals(couleurTest) && board[x][y].getColor() != couleurTest){
@@ -42,7 +40,7 @@ public class Territory {
 				}
 			}
 		}
-		if (x==19 && y==0){
+		if (x==(board.length-1) && y==0){
 			if (board[x-1][y].getColor() != null && board[x][y+1].getColor() != null){
 				Color couleurTest = board[x-1][y].getColor();
 				if (board[x][y+1].getColor().equals(couleurTest) && board[x][y].getColor() != couleurTest){
@@ -50,7 +48,7 @@ public class Territory {
 				}
 			}
 		}
-		if (x==0 && y==19){
+		if (x==0 && y==(board.length-1)){
 			if (board[x+1][y].getColor() != null && board[x][y-1].getColor() != null){
 				Color couleurTest = board[x+1][y].getColor();
 				if (board[x][y-1].getColor().equals(couleurTest) && board[x][y].getColor() != couleurTest){
@@ -58,7 +56,7 @@ public class Territory {
 				}
 			}
 		}
-		if (x==19 && y==19){
+		if (x==(board.length-1) && y==(board.length-1)){
 			if (board[x-1][y].getColor() != null && board[x][y-1].getColor() != null){
 				Color couleurTest = board[x-1][y].getColor();
 				if (board[x][y-1].getColor().equals(couleurTest) && board[x][y].getColor() != couleurTest){
@@ -67,7 +65,7 @@ public class Territory {
 			}
 		}
 		//Ligne du Haut.
-		if (x==0 && y!=0 && y!=19){
+		if (x==0 && y!=0 && y!=(board.length-1)){
 			if (board[x+1][y].getColor() != null && board[x][y+1].getColor() != null && board[x][y-1].getColor() != null){
 				Color couleurTest = board[x+1][y].getColor();
 				if (board[x][y+1].getColor().equals(couleurTest) && board[x][y-1].getColor().equals(couleurTest) && board[x][y].getColor() != couleurTest){
@@ -76,7 +74,7 @@ public class Territory {
 			}
 		}
 		//Ligne de Gauche.
-		if (y==0 && x!=0 && x!=19){
+		if (y==0 && x!=0 && x!=(board.length-1)){
 			if (board[x+1][y].getColor() != null && board[x][y+1].getColor() != null && board[x-1][y].getColor() != null){
 				Color couleurTest = board[x+1][y].getColor();
 				if (board[x][y+1].getColor().equals(couleurTest) && board[x-1][y].getColor().equals(couleurTest) && board[x][y].getColor() != couleurTest){
@@ -85,7 +83,7 @@ public class Territory {
 			}
 		}
 		//Ligne du Bas.
-		if (x==19 && y!=19 && y!=0){
+		if (x==(board.length-1) && y!=(board.length-1) && y!=0){
 			if (board[x-1][y].getColor() != null && board[x][y+1].getColor() != null && board[x][y-1].getColor() != null){
 				Color couleurTest = board[x-1][y].getColor();
 				if (board[x][y+1].getColor().equals(couleurTest) && board[x][y-1].getColor().equals(couleurTest) && board[x][y].getColor() != couleurTest){
@@ -94,7 +92,7 @@ public class Territory {
 			}
 		}
 		//Ligne de Droite.
-		if (y==19 && x!= 19 && x!=0){
+		if (y==(board.length-1) && x!= (board.length-1) && x!=0){
 			if (board[x+1][y].getColor() != null && board[x][y-1].getColor() != null && board[x-1][y].getColor() != null){
 				Color couleurTest = board[x+1][y].getColor();
 				if (board[x][y-1].getColor().equals(couleurTest) && board[x-1][y].getColor().equals(couleurTest) && board[x][y].getColor() != couleurTest){
@@ -136,55 +134,58 @@ public class Territory {
 	
 	//Create an arrayList of close fitting piece, and verify if its surrounded by different colors pieces.
 	public static void testAutour(Intersection inter){
+		//System.out.println(String.format("testAutour inter(%d:%d)", inter.abscisse, inter.ordonnee));
+		if (inter.bCalled) {
+			System.out.println(String.format("===> ERROR : already called"));
+			return;
+		}
+		inter.bCalled = true;
 		Color CurCol = inter.getColor();
-		Color LNCol = null;
-		Color LSCol = null;
-		Color LDCol = null;
-		Color LGCol = null;
+		Intersection nextInter = null;
+		Color nextCol = null;
 		
-		if (inter.getLN().getColor() == CurCol){
-			if (inter.getCaller() != inter.getLN() && inter.getCalled() != inter.getLN()){
-				inter.getLN().setCaller(inter);
-				inter.setCalled(inter.getLN());
-				testAutour(inter.getLN());
+		nextInter = inter.getLN();
+		nextCol = nextInter.getColor();
+		if (nextCol == CurCol){
+			if (!nextInter.bCalled){
+				testAutour(nextInter);
 			}
 		}
 		else {
-			LNCol = inter.getLN().getColor();
-			ListeColAutour.add(LNCol);
+			ListeColAutour.add(nextCol);
 		}
-		if (inter.getLS().getColor() == CurCol){
-			if (inter.getCaller() != inter.getLS() && inter.getCalled() != inter.getLS()){
-				inter.getLS().setCaller(inter);
-				inter.setCalled(inter.getLS());
-				testAutour(inter.getLS());
+		
+		nextInter = inter.getLS();
+		nextCol = nextInter.getColor();
+		if (nextCol == CurCol){
+			if (!nextInter.bCalled){
+				testAutour(nextInter);
 			}
 		}
 		else {
-			LSCol = inter.getLS().getColor();
-			ListeColAutour.add(LSCol);
+			ListeColAutour.add(nextCol);
 		}
-		if (inter.getLE().getColor() == CurCol){
-			if (inter.getCaller() != inter.getLE() && inter.getCalled() != inter.getLE()){
-				inter.getLE().setCaller(inter);
-				inter.setCalled(inter.getLE());
-				testAutour(inter.getLE());
+		
+		nextInter = inter.getLE();
+		nextCol = nextInter.getColor();
+		if (nextCol == CurCol){
+			if (!nextInter.bCalled){
+				testAutour(nextInter);
 			}
 		}
 		else {
-			LDCol = inter.getLE().getColor();
-			ListeColAutour.add(LDCol);
+			ListeColAutour.add(nextCol);
 		}
-		if (inter.getLO().getColor() == CurCol){
-			if (inter.getCaller() != inter.getLO() && inter.getCalled() != inter.getLO()){
-				inter.getLO().setCaller(inter);
-				inter.setCalled(inter.getLO());
-				testAutour(inter.getLO());
+		
+		nextInter = inter.getLO();
+		nextCol = nextInter.getColor();
+		if (nextCol == CurCol){
+			if (!nextInter.bCalled){
+				testAutour(nextInter);
 			}
 		}
 		else {
-			LGCol = inter.getLO().getColor();
-			ListeColAutour.add(LGCol);
+			ListeColAutour.add(nextCol);
 		}
 	}
 	
@@ -193,27 +194,24 @@ public class Territory {
 		Color LaColor = CurInter.getColor();
 		if (CurInter.getColor() != null){
 			Ensemble.add(CurInter);
+			CurInter.inEnsMC = true;
 			if (CurInter.getLN().getColor() == LaColor){
 				if (!Ensemble.contains(CurInter.getLN())){
-					Ensemble.add(CurInter.getLN());
 					EnsembleMC(CurInter.getLN());
 				}
 			}
 			if (CurInter.getLS().getColor() == LaColor){
 				if (!Ensemble.contains(CurInter.getLS())){
-					Ensemble.add(CurInter.getLS());
 					EnsembleMC(CurInter.getLS());
 				}
 			}
 			if (CurInter.getLE().getColor() == LaColor){
 				if (!Ensemble.contains(CurInter.getLE())){
-					Ensemble.add(CurInter.getLE());
 					EnsembleMC(CurInter.getLE());
 				}
 			}
 			if (CurInter.getLO().getColor() == LaColor){
 				if (!Ensemble.contains(CurInter.getLO())){
-					Ensemble.add(CurInter.getLO());
 					EnsembleMC(CurInter.getLO());
 				}
 			}
@@ -224,6 +222,7 @@ public class Territory {
 		Color LaColor = CurInter.getColor();
 		if (CurInter.getColor() == null){
 			Ensemble.add(CurInter);
+			CurInter.inEnsNULL = true;
 			if (CurInter.getLN().getColor() == LaColor){
 				if (!Ensemble.contains(CurInter.getLN())){
 					EnsembleNULL(CurInter.getLN());

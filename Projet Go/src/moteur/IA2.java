@@ -4,20 +4,22 @@
 package moteur;
 
 import boardComponent.Intersection;
+import boardComponent.Territory;
 import java.awt.*;
 
 /**
  * @author Antoine
  *
  */
-public class IA{
+public class IA2{
 
 	
 	public Intersection IATurn(Intersection[][] board, Color colo) {		//fonction rep�sentant le tour de l'IA
-		int eval[][] = new int[20][20];							//Tableau qui contient les valeurs de la fonction d'�valuation
-		for (int i=1; i<19; i++) {
-			for (int j=1; j<19; j++) {
-				if (board[i][j].getColor() == null) {
+		int Taille  = board.length;
+		int eval[][] = new int[Taille][Taille]; //Tableau qui contient les valeurs de la fonction d'évaluation
+		for (int i=1; i<(Taille-1); i++) {
+			for (int j=1; j<(Taille-1); j++) {
+				if (board[i][j].getColor() == null && !Territory.eye(board, i, j)) {
 					eval[i][j]= Evaluation(board[i][j], i, j, board, colo);
 				}else {
 					eval[i][j]= -1000;
@@ -28,9 +30,9 @@ public class IA{
 		int choice = eval[0][0];
 		int ichoice = 0;
 		int jchoice = 0;
-		for (int i=1; i<19; i++) {
-			for (int j=1; j<19; j++) {
-				if (eval[i][j] > choice) {			//determination du meilleur choix possible
+		for (int i=1; i<(Taille-1); i++) {
+			for (int j=1; j<(Taille-1); j++) {
+				if (eval[i][j] > choice) { //determination du meilleur choix possible
 					choice = eval[i][j];
 					ichoice = i;
 					jchoice = j;
@@ -41,7 +43,8 @@ public class IA{
 	}
 
 	public int Evaluation(Intersection inter, int abs, int ord, Intersection[][] board, Color colo) {
-		int eval = PlayPiece(inter, colo, board) + Chaine(inter, colo, board) + DiagonalChaine(inter, colo, board) + Territory(inter, colo, board);
+//		int eval = PlayPiece(inter, colo, board) + Chaine(inter, colo, board) + DiagonalChaine(inter, colo, board) + Territory(inter, colo, board);
+		int eval = PlayPiece(inter, colo, board) + Chaine(inter, colo, board) + DiagonalChaine(inter, colo, board);
 		return eval;
 	}
 
@@ -167,7 +170,7 @@ public class IA{
 			return TerritoryfromNW( absstart, ordstart, abs+1, ord+1, board, length+1, colo);
 		}
 		else if(board[abs+1][ord-1].getColor() == colo) {
-			return TerritoryfromNE( absstart, ordstart, abs+1, ord-1, board, length+1, colo);
+			return TerritoryfromSW( absstart, ordstart, abs+1, ord-1, board, length+1, colo);
 		}
 		else if(board[abs-1][ord].getColor() == colo) {
 			return TerritoryfromE( absstart, ordstart, abs-1, ord, board, length+1, colo);
@@ -231,10 +234,10 @@ public class IA{
 		else if(board[abs-1][ord-1].getColor() == colo) {
 			return TerritoryfromSE( absstart, ordstart, abs-1, ord-1, board, length+1, colo);
 		}
-		else if(board[abs+1][ord-1].getColor() == colo) {
+		else if(board[abs-1][ord+1].getColor() == colo) {
 			return TerritoryfromNE( absstart, ordstart, abs+1, ord-1, board, length+1, colo);
 		}
-		else if(board[abs-1][ord+1].getColor() == colo) {
+		else if(board[abs+1][ord-1].getColor() == colo) {
 			return TerritoryfromSW( absstart, ordstart, abs-1, ord+1, board, length+1, colo);
 		}
 		else if(board[abs-1][ord].getColor() == colo) {
@@ -302,8 +305,8 @@ public class IA{
 		else if(board[abs+1][ord+1].getColor() == colo) {
 			return TerritoryfromNW( absstart, ordstart, abs+1, ord+1, board, length+1, colo);
 		}
-		else if(board[abs-1][ord+1].getColor() == colo) {
-			return TerritoryfromNE( absstart, ordstart, abs-1, ord+1, board, length+1, colo);
+		else if(board[abs+1][ord-1].getColor() == colo) {
+			return TerritoryfromSW( absstart, ordstart, abs-1, ord+1, board, length+1, colo);
 		}
 		else if(board[abs-1][ord].getColor() == colo) {
 			return TerritoryfromE( absstart, ordstart, abs-1, ord, board, length+1, colo);

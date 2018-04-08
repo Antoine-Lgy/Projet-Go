@@ -27,8 +27,9 @@ public class Intersection {
 	protected Intersection LSE = null;
 	protected Intersection LNO = null;
 	protected Intersection LSO = null;
-	protected Intersection Caller = null;
-	protected Intersection Called = null;
+	public boolean bCalled = false;
+	public boolean inEnsMC = false;
+	public boolean inEnsNULL = false;
 	
 
 	public Intersection(int abs, int ord, Color _C) {
@@ -87,18 +88,6 @@ public class Intersection {
 	}
 	public Intersection getLO() {
 		return LO;
-	}
-	public void setCaller(Intersection caller) {
-		Caller = caller;
-	}
-	public Intersection getCaller() {
-		return Caller;
-	}
-	public void setCalled(Intersection called) {
-		Called = called;
-	}
-	public Intersection getCalled() {
-		return Called;
 	}
 	public void setLNE(Intersection lNE) {
 		LNE = lNE;

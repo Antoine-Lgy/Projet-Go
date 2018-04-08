@@ -15,7 +15,7 @@ import javax.swing.JPanel;
 import boardComponent.Intersection;
 import boardComponent.Territory;
 import moteur.ArcherPiece;
-import moteur.IA;
+import moteur.IA2;
 import moteur.MagePiece;
 import moteur.MonkPiece;
 import moteur.NormalPiece;
@@ -40,8 +40,8 @@ public class DrawGoban extends JPanel implements MouseListener{
 	int nbIA = 0;
 	int nbPlayer = 0;
 	Intersection[][] PrevTabInter = new Intersection[Taille][Taille];
-	IA MyIAWhite = new IA();
-	IA MyIARed = new IA();
+	IA2 MyIAWhite = new IA2();
+	IA2 MyIARed = new IA2();
 	int scoreBlTer = 0;
 	int scoreWhTer = 0;
 	int scoreReTer = 0;
@@ -288,8 +288,7 @@ public class DrawGoban extends JPanel implements MouseListener{
 					type = "normal";
 				}
 				if (type=="archer") {
-					JOptionPane jop = new JOptionPane();
-					String direc = jop.showInputDialog(null, "Chose a direction (right, left, up, down):", "Arrow", JOptionPane.QUESTION_MESSAGE);
+					String direc = JOptionPane.showInputDialog(null, "Chose a direction (right, left, up, down):", "Arrow", JOptionPane.QUESTION_MESSAGE);
 					if(Player==0){
 						ArcherPiece.Arrow(tabInter,black,y,x,direc);
 						Player=1;
@@ -327,69 +326,81 @@ public class DrawGoban extends JPanel implements MouseListener{
 		}
 		Calcul();
 		repaint();
-		if(Player==0){
-			Player=2;
-		}
-		else if (Player==1) {
-			Player=0;
-		}
-		else if (Player==2) {
-			Player=1;
-		}
-		else if(Player==10){
-			Player=11;
-		}
-		else if(Player==11){
-			Player=10;
+		if (nbIA == 0) {
+			if(Player==0){
+				Player=2;
+			}
+			else if (Player==1) {
+				Player=0;
+			}
+			else if (Player==2) {
+				Player=1;
+			}
+			else if(Player==10){
+				Player=11;
+			}
+			else if(Player==11){
+				Player=10;
+			}
 		}
 		myGameScreen.ShowScore(scoreBlTer, scoreWhTer, scoreReTer);
 	}
 	
 	//Pass the current player turn.
 	public void Pass() {
-		if(Player==0){
-			Player=1;
-		}
-		else if (Player==1) {
-			Player=2;
-		}
-		else if (Player==2) {
-			Player=0;
-		}
-		else if(Player==10){
-			Player=11;
-		}
-		else if(Player==11){
-			Player=10;
+		if (nbIA == 0){
+			if(Player==0){
+				Player=1;
+			}
+			else if (Player==1) {
+				Player=2;
+			}
+			else if (Player==2) {
+				Player=0;
+			}
+			else if(Player==10){
+				Player=11;
+			}
+			else if(Player==11){
+				Player=10;
+			}
 		}
 		ActualPassNum--;
 		if (ActualPassNum == 1){
-			JOptionPane jop = new JOptionPane();
-			jop.showMessageDialog(null, "Si le prochain joueur passe son tour, la partie sera finie.", null, JOptionPane.INFORMATION_MESSAGE);
+			JOptionPane.showMessageDialog(null, "Si le prochain joueur passe son tour, la partie sera finie.", null, JOptionPane.INFORMATION_MESSAGE);
 		}
 		if (ActualPassNum == 0){
 			Player = 5;
-			JOptionPane jop = new JOptionPane();
-			int Bs = Score.BScoreCount(tabInter);
-			int Ws = Score.WScoreCount(tabInter);
-			int Rs = Score.RScoreCount(tabInter);
+			double Bs = 0;
+			double Ws = 0;
+			double Rs = 0;
+			if (nbPlayer == 2){
+				Bs = Score.BScoreCount(tabInter);
+				Ws = Score.WScoreCount(tabInter) + 7.5;
+				Rs = Score.RScoreCount(tabInter);
+			}
+			else{
+				Bs = Score.BScoreCount(tabInter);
+				Ws = Score.WScoreCount(tabInter) + 0.25;
+				Rs = Score.RScoreCount(tabInter) + 0.5;
+			}
 			if (PassNumLim == 3){
 				if (Bs > Ws && Bs > Rs) {
-					jop.showMessageDialog(null, "Fin de la partie, Le jouer Noir a gagné !" + " Noir : "+ Bs + "  Blanc : "+ Ws + "  Rouge : "+ Rs, null, JOptionPane.INFORMATION_MESSAGE);
+					JOptionPane.showMessageDialog(null, "Fin de la partie, Le jouer Noir a gagné !" + " Noir : "+ Bs + "  Blanc : "+ Ws + "  Rouge : "+ Rs, null, JOptionPane.INFORMATION_MESSAGE);
 				}
 				if (Ws > Bs && Ws > Rs) {
-					jop.showMessageDialog(null, "Fin de la partie, Le jouer Blanc a gagné !" + " Noir : "+ Bs + "  Blanc : "+ Ws + "  Rouge : "+ Rs, null, JOptionPane.INFORMATION_MESSAGE);
+					JOptionPane.showMessageDialog(null, "Fin de la partie, Le jouer Blanc a gagné !" + " Noir : "+ Bs + "  Blanc : "+ Ws + "  Rouge : "+ Rs, null, JOptionPane.INFORMATION_MESSAGE);
 				}
 				if (Rs > Ws && Rs > Bs) {
-					jop.showMessageDialog(null, "Fin de la partie, Le jouer Rouge a gagné !" + " Noir : "+ Bs + "  Blanc : "+ Ws + "  Rouge : "+ Rs, null, JOptionPane.INFORMATION_MESSAGE);
+					JOptionPane.showMessageDialog(null, "Fin de la partie, Le jouer Rouge a gagné !" + " Noir : "+ Bs + "  Blanc : "+ Ws + "  Rouge : "+ Rs, null, JOptionPane.INFORMATION_MESSAGE);
 				}
 			}
 			else {
 				if (Bs > Ws && Bs > Rs) {
-					jop.showMessageDialog(null, "Fin de la partie, Le jouer Noir a gagné !" + " Noir : "+ Bs + "  Blanc : "+ Ws, null, JOptionPane.INFORMATION_MESSAGE);
+					JOptionPane.showMessageDialog(null, "Fin de la partie, Le jouer Noir a gagné !" + " Noir : "+ Bs + "  Blanc : "+ Ws, null, JOptionPane.INFORMATION_MESSAGE);
 				}
 				if (Ws > Bs && Ws > Rs) {
-					jop.showMessageDialog(null, "Fin de la partie, Le jouer Blanc a gagné !" + " Noir : "+ Bs + "  Blanc : "+ Ws, null, JOptionPane.INFORMATION_MESSAGE);
+					JOptionPane.showMessageDialog(null, "Fin de la partie, Le jouer Blanc a gagné !" + " Noir : "+ Bs + "  Blanc : "+ Ws, null, JOptionPane.INFORMATION_MESSAGE);
 				}
 			}
 		}
@@ -408,21 +419,26 @@ public class DrawGoban extends JPanel implements MouseListener{
 	}
 	
 	public void Calcul(){
+		System.out.println("=== Calcul ===");
+
+		System.out.println("=== Calcul des ensembles de pions de même couleur ===");
 		for (int i=0; i<Taille; i++) {
 			for (int j=0; j<Taille; j++){
-				if (tabInter[i][j].getColor() == null){
-					
-				}
-				else {
+				tabInter[i][j].inEnsMC = false;
+			}
+		}
+		for (int i=0; i<Taille; i++) {
+			for (int j=0; j<Taille; j++){
+				if ((tabInter[i][j].getColor() != null) && (tabInter[i][j].inEnsMC == false)){
 					Territory.ResetList();
 					Territory.ResetEns();
 					for (int i1=0; i1<Taille; i1++) {
 						for (int j1=0; j1<Taille; j1++){
-							tabInter[i1][j1].setCaller(null);
-							tabInter[i1][j1].setCalled(null);
+							tabInter[i1][j1].bCalled = false;
 						}
 					}
 					//Create a group of the same color piece, starting with the tabInter[i][j].
+					System.out.println(String.format("EnsembleMC for inter(%d:%d)", tabInter[i][j].getAbscisse(), tabInter[i][j].getOrdonnee()));
 					Territory.EnsembleMC(tabInter[i][j]);
 					//If the group is surrounded according to the rules, then delete them.
 					if (Territory.GrandTer(Territory.Ensemble) == true){
@@ -434,39 +450,44 @@ public class DrawGoban extends JPanel implements MouseListener{
 				}
 			}
 		}
-		/*
+		
+		System.out.println("=== Calcul des ensembles sans pion ===");
 		scoreBlTer = 0;
 		scoreWhTer = 0;
 		scoreReTer = 0;
 		for (int i=0; i<Taille; i++) {
 			for (int j=0; j<Taille; j++){
-				if (tabInter[i][j].getColor() == null){
+				tabInter[i][j].inEnsNULL = false;
+			}
+		}
+		for (int i=0; i<Taille; i++) {
+			for (int j=0; j<Taille; j++){
+				if ((tabInter[i][j].getColor() == null) && (tabInter[i][j].inEnsNULL == false)){
 					Territory.ResetList();
 					Territory.ResetEns();
 					for (int i1=0; i1<Taille; i1++) {
 						for (int j1=0; j1<Taille; j1++){
-							tabInter[i1][j1].setCaller(null);
-							tabInter[i1][j1].setCalled(null);
+							tabInter[i1][j1].bCalled = false;
 						}
 					}
 					//Create a group of the same color piece, starting with the tabInter[i][j].
+					System.out.println(String.format("EnsembleNULL for inter(%d:%d)", tabInter[i][j].getAbscisse(), tabInter[i][j].getOrdonnee()));
 					Territory.EnsembleNULL(tabInter[i][j]);
 					//If the group is surrounded according to the rules, then delete them.
 					if (Territory.GrandTer(Territory.Ensemble) == true){
-						ArrayList<Intersection> EnsTest = Territory.Ensemble;
 						if (Territory.CaptureColor == Color.BLACK){
-							scoreBlTer = scoreBlTer + 1;
+							scoreBlTer = scoreBlTer + Territory.Ensemble.size();
 						}
 						if (Territory.CaptureColor == Color.WHITE){
-							scoreWhTer = scoreWhTer + 1;
+							scoreWhTer = scoreWhTer + Territory.Ensemble.size();
 						}
 						if (Territory.CaptureColor == Color.RED){
-							scoreReTer = scoreReTer + 1;
+							scoreReTer = scoreReTer + Territory.Ensemble.size();
 						}
 					}
 				}
 			}
-		}*/
+		}
 	}
 	
 	@Override
@@ -475,34 +496,38 @@ public class DrawGoban extends JPanel implements MouseListener{
 		SaveTable();
 		int xclic = e.getX()/28;
 		int yclic = e.getY()/28;
+		int myPlayer = Player;
 		this.addColInTab(xclic, yclic);
-		Calcul();
-		
-		this.repaint();
-		
-		//Traitement du tour de l'IA.
-		
-		/*if (nbPlayer == 2 && nbIA == 1){
-			Intersection IAInter = MyIAWhite.IATurn(tabInter,Color.WHITE);
-			this.addColInTab(IAInter.getAbscisse(), IAInter.getOrdonnee());
+		if (myPlayer != Player) {
+			Calcul();
 			this.repaint();
+			
+			//Traitement du tour de l'IA.
+			
+			if (nbPlayer == 2 && nbIA == 1){
+				Intersection IAInter = MyIAWhite.IATurn(tabInter,Color.WHITE);
+				System.out.println(String.format("IA returns inter(%d:%d)", IAInter.getAbscisse(), IAInter.getOrdonnee()));
+				this.addColInTab(IAInter.getAbscisse(), IAInter.getOrdonnee());
+				Calcul();
+				this.repaint();
+			}
+			/*if (nbPlayer == 3 && nbIA == 1){
+				Intersection IAInter = MyIARed.IATurn(tabInter,Color.RED);
+				this.addColInTab(IAInter.getAbscisse(), IAInter.getOrdonnee());
+				this.repaint();
+			}
+			if (nbPlayer == 3 && nbIA == 2){
+				Intersection IAInter = MyIAWhite.IATurn(tabInter,Color.WHITE);
+				this.addColInTab(IAInter.getAbscisse(), IAInter.getOrdonnee());
+				Intersection IAInter2 = MyIARed.IATurn(tabInter,Color.RED);
+				this.addColInTab(IAInter2.getAbscisse(), IAInter2.getOrdonnee());
+				this.repaint();
+			*/
+			
+			ActualPassNum = PassNumLim;
+			myGameScreen.cancelButton.setEnabled(true);
+			myGameScreen.ShowScore(scoreBlTer, scoreWhTer, scoreReTer);
 		}
-		if (nbPlayer == 3 && nbIA == 1){
-			Intersection IAInter = MyIARed.IATurn(tabInter,Color.RED);
-			this.addColInTab(IAInter.getAbscisse(), IAInter.getOrdonnee());
-			this.repaint();
-		}
-		if (nbPlayer == 3 && nbIA == 2){
-			Intersection IAInter = MyIAWhite.IATurn(tabInter,Color.WHITE);
-			this.addColInTab(IAInter.getAbscisse(), IAInter.getOrdonnee());
-			Intersection IAInter2 = MyIARed.IATurn(tabInter,Color.RED);
-			this.addColInTab(IAInter2.getAbscisse(), IAInter2.getOrdonnee());
-			this.repaint();
-		*/
-		
-		ActualPassNum = PassNumLim;
-		myGameScreen.cancelButton.setEnabled(true);
-		myGameScreen.ShowScore(scoreBlTer, scoreWhTer, scoreReTer);
 	}
 
 	@Override
